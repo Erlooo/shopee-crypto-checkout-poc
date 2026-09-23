@@ -538,7 +538,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
       <div id="api"></div>
     </div>
     <div class="card note">
-      Base: <code>/api/v1/partner-api</code>, Bearer JWT authentication (exchange of <code>x-partner-id</code> and <code>x-partner-secret</code>). Shopee calls the API from its own backend and renders everything in its own front end: Transfero never shows up as a page, only as the payment processor.
+      Base: <code>/api/v1/partner-api</code>. Every call uses a Bearer JWT from <code>POST /auth/token</code> (headers <code>x-partner-id</code> and <code>x-partner-secret</code>). Shopee calls the API from its own backend and renders everything in its own front end: Transfero never shows up as a page, only as the payment processor.
     </div>
   </aside>
 </div>
@@ -578,43 +578,67 @@ const API={
   cart:[{h:'No calls to Transfero',p:'Cart is 100% Shopee. Transfero only comes in when the buyer picks crypto as the payment method.'}],
   checkout:()=>S.method==='crypto'
     ?[{h:'State held by Shopee',p:'Selected method and estimate are already in the session. No new calls until "Place order".'}]
-    :[{h:'No calls to Transfero',p:'Native Shopee screen. Payment method opens the list where crypto sits next to Pix, card and boleto.'}],
+    :[{h:'No calls to Transfero',p:'Native Shopee screen. Payment method opens the list where crypto sits next to Pix, card and boleto.'},
+      {v:'POST',e:'/auth/token',h:'Server-side authentication',p:'Shopee backend exchanges its credentials, sent as headers, for a short-lived Bearer JWT used on every call below.',j:`headers: x-partner-id, x-partner-secret
+→ { "accessToken": "eyJ…", "tokenType": "Bearer",
+    "expiresIn": 3600 }`}],
   methods:()=>[
-    {v:'GET',e:'/payment-methods',h:'Enabled currencies and networks',p:'Builds the currency chips. The list comes from the partner configuration, so new currencies show up without a Shopee deploy.',j:`{
+    {v:'GET',e:'/payment-methods',h:'Enabled currencies and networks',p:'Builds the currency chips. Currency and blockchain values sent in later calls must be taken exactly from this list; the names below are illustrative.',j:`{
   "methods": [
-    { "label": "Tether", "currency": "USDT",
-      "blockchains": [{ "name": "polygon" }] },
-    { "label": "USD Coin", "currency": "USDC", ... },
-    { "label": "Brazilian Digital", "currency": "BRZ", ... }
+    { "label": "Tether", "currency": "USDT", "picture": "https://…",
+      "blockchains": [{ "name": "polygon", "isOffchain": false }] },
+    { "label": "USD Coin", "currency": "USDC", … },
+    { "label": "BRZ", "currency": "BRZ", … }
   ]
 }`},
-    {v:'POST',e:'/orders',h:'Creates the order when crypto is picked',p:'Idempotent on externalId (Shopee checkout id): switching currency or going back never duplicates the order.',j:`{ "externalId": "SHP-260923K8P4QX", "amount": 192.50 }
-→ { "orderId": "7f3c…" }`},
-    {v:'POST',e:'/orders/{orderId}/preview',h:'Estimate shown',p:'Approximate, non-binding amount, used in "You pay approx.".',j:`{ "currency": "${S.coin}", "blockchain": "polygon" }
-→ { "estimatedCryptoAmount": ${amt(S.coin).toFixed(2)} }`}
+    {v:'POST',e:'/orders',h:'Creates the order when crypto is picked',p:'externalId and currency are required. Idempotent on externalId (the Shopee order id): switching currency or going back returns the same order.',j:`{ "externalId": "SHP-260923K8P4QX", "currency": "BRL",
+  "amount": 192.50 }
+→ { "orderId": "7f3c…", "externalId": "SHP-260923K8P4QX",
+    "currency": "BRL", "amount": 192.50,
+    "status": "…", "createdAt": "2026-09-23T14:00:00Z" }`},
+    {v:'POST',e:'/orders/{orderId}/preview',h:'Estimate shown',p:'Approximate, non-binding market preview used in "You pay approx.". It does not lock the rate.',j:`{ "currency": "${S.coin}", "blockchain": "polygon" }
+→ { "indicativePrice": ${COINS[S.coin].rate.toFixed(2)},
+    "estimatedCryptoAmount": ${amt(S.coin).toFixed(2)},
+    "currency": "${S.coin}", "blockchain": "polygon",
+    "displayExpiresAt": "2026-09-23T14:01:00Z" }`}
   ],
-  welcome:[{h:'Static Shopee content',p:'Shown only on first crypto use. No API dependency; the copy reflects Checkout rules (5-minute window, automatic confirmation).'}],
+  welcome:[{h:'Static Shopee content',p:'Shown only on first crypto use. No API call. The payment window shown to the buyer comes from expiresAt in the payment response.'}],
   payment:()=>[
-    {v:'POST',e:'/orders/{orderId}/payment',h:'Creates the QR and locks the amount',p:'Triggered by "Place order". The cryptoAmount here is binding and expiresAt drives the timer.',j:`{ "currency": "${S.coin}", "blockchain": "polygon" }
+    {v:'POST',e:'/orders/{orderId}/payment',h:'Creates the QR and locks the amount',p:'Triggered by "Place order". cryptoAmount is binding and may differ from the preview. qrCodePayload is the copy-and-paste code; expiresAt drives the timer.',j:`{ "currency": "${S.coin}", "blockchain": "polygon" }
 → {
   "cryptoAmount": ${amt(S.coin).toFixed(2)},
+  "currency": "${S.coin}",
+  "blockchain": "polygon",
   "depositAddress": "0x…",
-  "qrCodePayload": "polygon:0x…",
   "qrCodeBase64": "iVBOR…",
-  "expiresAt": "2026-09-23T14:05:00Z"
+  "qrCodePayload": "ethereum:0x…",
+  "expiresAt": "2026-09-23T14:05:00Z",
+  "blockchainFee": 0.001,
+  "tradeId": ${S.coin==='BRZ'?'null':'"trade-uuid"'}
 }`},
-    {v:'GET',e:'/orders/{orderId}',h:'Polling every 5 to 10 s',p:'While payment.status = Awaiting, the screen keeps waiting.',j:`{ "payment": { "status": "Awaiting" },
-  "settlement": { "status": "Pending" } }`}
+    {v:'GET',e:'/orders/{orderId}',h:'Polling every 5 to 10 s',p:'Required while the buyer is on this screen: there is no webhook for the buyer payment. Keep polling while payment.status = Awaiting.',j:`{ "orderId": "7f3c…", "externalId": "SHP-260923K8P4QX",
+  "payment": { "status": "Awaiting",
+    "expiresAt": "2026-09-23T14:05:00Z" },
+  "settlement": { "status": "Pending",
+    "payout": { "status": "NotApplicable" } } }`}
   ],
-  verifying:[{v:'GET',e:'/orders/{orderId}',h:'Payment detected',p:'payment.status = Paid: safe to close the payment screen.',j:`{ "payment": { "status": "Paid" },
+  verifying:[{v:'GET',e:'/orders/{orderId}',h:'Payment detected',p:'payment.status = Paid: crypto recognized, safe to close the payment screen. Funds are not confirmed yet.',j:`{ "payment": { "status": "Paid",
+    "paidAt": "2026-09-23T14:02:10Z",
+    "currency": "${S.coin}", "blockchain": "polygon",
+    "amount": ${amt(S.coin).toFixed(2)} },
   "settlement": { "status": "Pending" } }`}],
-  success:[
-    {v:'WEBHOOK',e:'settlement',h:'Settlement in BRZ',p:'settlement.status = Settled: BRZ credited to the Shopee Ultra account. This is the trigger to release shipping to the seller.',j:`{ "payment": { "status": "Paid" },
+  success:()=>[
+    {v:'GET',e:'/orders/{orderId}',h:'Settlement in BRZ',p:'Slow polling after Paid until settlement.status = Settled: BRZ credited to the Shopee Ultra account. This is the trigger to release shipping to the seller.',j:`{ "payment": { "status": "Paid" },
   "settlement": { "status": "Settled",
-    "payout": { "status": "Pending" } } }`},
-    {h:'Automatic Pix payout (optional)',p:'With payout configured, the balance goes out via Pix to the Shopee bank account (payout.status Completed). Otherwise Shopee withdraws on demand via POST /withdrawals.'}
+    "settledAt": "2026-09-23T14:03:40Z",
+    "tradeId": ${S.coin==='BRZ'?'null':'"trade-uuid"'},
+    "payout": { "status": "NotApplicable" } } }`},
+    {h:'Webhooks come from Ultra, not Checkout',p:S.coin==='BRZ'
+      ?'Transfero Checkout sends no partner webhooks. For BRZ there is no trade event (tradeId is null), so settlement is confirmed by polling only.'
+      :'Transfero Checkout sends no partner webhooks. For '+S.coin+', Ultra can send otc.trade.settled (matched by tradeId) as a signal to call GET /orders/{orderId}. The webhook alone is never the source of truth.'},
+    {h:'Getting the money out',p:'With automatic payout enabled, settlement.payout.status goes Pending → Completed as Pix reaches the Shopee bank account. Otherwise Shopee calls POST /withdrawals, which always pays out to its pre-configured Pix key.'}
   ],
-  expired:[{v:'GET',e:'/orders/{orderId}',h:'Window expired',p:'payment.status = Expired. "Generate new QR code" calls POST /orders/{orderId}/payment again with an updated quote.',j:`{ "payment": { "status": "Expired" } }`}]
+  expired:[{v:'GET',e:'/orders/{orderId}',h:'Window expired',p:'payment.status = Expired: the window closed without payment. "Generate new QR code" would request a new payment for the same order; re-submitting after expiry is not described in the current docs and needs confirmation.',j:`{ "payment": { "status": "Expired" } }`}]
 };
 
 function renderApi(key){
@@ -671,8 +695,7 @@ function startPayment(){
   $('#warnCoin').innerHTML=`<b>${S.coin}</b>`;
   $('#qrOver').classList.remove('on');
   $('#payStatus').innerHTML='<span class="dot"></span>Awaiting payment. Confirmation is automatic.';
-  const units={USDT:6,USDC:6,BRZ:4}[S.coin];
-  $('#ccCode').textContent=`ethereum:0xDEMO${S.coin}0000000000000000000000@137/transfer?address=0xDEMO000000000000000000000000000PR0T0&uint256=${Math.round(amt(S.coin)*10**units)}`;
+  $('#ccCode').textContent='ethereum:0xDEMO000000000000000000000000000000PR0T0';
   drawQR(S.coin);
   S.deadline=Date.now()+5*60*1000;
   stopTimer(); updateTimer(); tick=setInterval(updateTimer,1000);
