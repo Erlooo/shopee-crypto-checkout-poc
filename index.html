@@ -262,6 +262,176 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
   .phone{width:100%;max-width:390px;height:760px;margin:0 auto;position:static;padding:0;border-radius:0;background:none;box-shadow:none}
   .screen{border-radius:16px;border:1px solid var(--line)}
 }
+
+/* ---------- mode switch ---------- */
+.modesw{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.modesw button{padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:6px}
+.modesw button.on{background:var(--tf);color:#fff}
+.modesw svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ---------- web layout ---------- */
+.browser{display:none;min-width:0}
+.wrap.web{max-width:1480px;grid-template-columns:240px minmax(0,1fr)}
+.wrap.web .phone{display:none}
+.wrap.web .browser{display:block}
+.wrap.web .side.api{grid-column:1/-1}
+.wrap.web #api{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.wrap.web .api-step{margin-bottom:0}
+@media (max-width:1100px){.wrap.web{grid-template-columns:1fr}}
+
+.browser{background:#dfe1e5;border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.18);border:1px solid #c9ccd1}
+.bchrome{height:40px;display:flex;align-items:center;gap:12px;padding:0 14px;background:#dfe1e5}
+.bdots{display:flex;gap:6px}
+.bdots i{width:11px;height:11px;border-radius:50%;background:#ff5f57}
+.bdots i:nth-child(2){background:#febc2e}.bdots i:nth-child(3){background:#28c840}
+.burl{flex:1;height:26px;border-radius:13px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;font-size:12px;color:#5f6368;min-width:0;white-space:nowrap;overflow:hidden}
+.burl b{color:#202124;font-weight:400}
+.bflag{font-size:10px;letter-spacing:.05em;background:#000;color:#fff;padding:3px 8px;border-radius:10px;flex:none}
+.bview{position:relative;height:max(560px,calc(100vh - 170px));overflow-y:auto;overflow-x:hidden;background:var(--sp-bg)}
+.bcanvas{width:1200px;color:var(--sp-ink);font-size:14px;min-height:100%}
+
+/* shopee desktop */
+.wpage{display:none;min-height:100%}
+.wpage.on{display:block}
+.wtop{background:linear-gradient(-180deg,#f53d2d,#f63);color:#fff;font-size:13px}
+.wtop .in{width:1200px;margin:0 auto;padding:6px 16px;display:flex;justify-content:space-between}
+.wtop .in span{margin-right:14px;opacity:.95}
+.whead{background:#fff;border-bottom:1px solid rgba(0,0,0,.06)}
+.whead .in{width:1200px;margin:0 auto;padding:22px 16px;display:flex;align-items:center;gap:14px}
+.wlogo{display:flex;align-items:center;gap:8px;color:var(--sp);font-size:30px;font-weight:500;letter-spacing:-.5px}
+.wlogo svg{width:40px;height:44px}
+.wtitle{color:var(--sp);font-size:20px;padding-left:14px;border-left:1px solid var(--sp);line-height:30px}
+.wsearch{margin-left:auto;display:flex;width:560px;border:2px solid var(--sp);border-radius:2px}
+.wsearch input{flex:1;border:0;padding:0 12px;font:inherit;font-size:14px;outline:0}
+.wsearch button{background:var(--sp);color:#fff;width:80px;height:36px;display:grid;place-items:center}
+.wmain{width:1200px;margin:0 auto;padding:20px 16px 0}
+.wcard{background:#fff;border-radius:3px;box-shadow:0 1px 1px rgba(0,0,0,.05);margin-bottom:12px}
+
+/* cart table */
+.wgrid{display:grid;grid-template-columns:58px 1fr 170px 170px 150px 120px;align-items:center}
+.wth{padding:18px 0;color:#888;font-size:14px}
+.wth>div:not(:nth-child(2)),.witem>div:not(:nth-child(2)){text-align:center}
+.wth>div:first-child,.witem>div:first-child{display:flex;justify-content:center}
+.wshop{border-bottom:1px solid var(--sp-line);padding:16px 0;display:flex;align-items:center;gap:10px;font-weight:500}
+.wshop .chk{margin:0 20px}
+.witem{padding:18px 0;border-bottom:1px solid var(--sp-line)}
+.witem:last-of-type{border-bottom:0}
+.wprod{display:flex;gap:12px;align-items:flex-start;padding-right:16px}
+.wprod .thumb{width:80px;height:80px}
+.wprod .nm{line-height:1.35;flex:1}
+.wprod .vr{color:#888;font-size:13px;width:150px;flex:none}
+.wprice .old{display:inline;margin-right:8px}
+.wqty{display:inline-flex;border:1px solid rgba(0,0,0,.09);border-radius:2px}
+.wqty span{width:32px;height:32px;display:grid;place-items:center;color:#555}
+.wqty span:nth-child(2){width:50px;border-left:1px solid rgba(0,0,0,.09);border-right:1px solid rgba(0,0,0,.09);color:#222}
+.wtot{color:var(--sp)}
+.wdel{color:#222}
+.wshopfoot{border-top:1px solid var(--sp-line);padding:14px 20px 14px 58px;display:flex;align-items:center;gap:10px;font-size:14px}
+.wshopfoot .vc{color:var(--sp)}
+.wshopfoot a{color:#05a;margin-left:14px;text-decoration:none}
+.wshipnote{border-top:1px solid var(--sp-line);padding:14px 20px 14px 58px;font-size:14px;display:flex;gap:8px;align-items:center}
+.wbar{position:sticky;bottom:0;background:#fff;box-shadow:0 -2px 8px rgba(0,0,0,.06);margin-top:12px}
+.wbar .in{width:1200px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:20px;font-size:16px}
+.wbar .vb{display:flex;align-items:center;gap:10px;padding-left:20px}
+.wbar .tot{margin-left:auto;text-align:right}
+.wbar .tot b{color:var(--sp);font-size:24px;font-weight:500}
+.wbar .tot .sv{font-size:13px;color:#222}
+.wbar .tot .sv b{font-size:13px}
+.wbtn{background:var(--sp);color:#fff;border-radius:2px;height:40px;padding:0 20px;font-size:14px;min-width:210px;box-shadow:0 1px 1px rgba(0,0,0,.09)}
+.wbtn:hover{background:var(--sp-dark)}
+.wbtn:disabled{background:#f7a592;cursor:not-allowed}
+.wbtn.ghost{background:#fff;color:#555;border:1px solid rgba(0,0,0,.09);min-width:160px}
+.wbtn.ghost:hover{background:#fafafa}
+
+/* checkout */
+.waddr{position:relative;padding:28px 30px 24px}
+.waddr::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(45deg,#6fa6d6 0 33px,transparent 33px 41px,#f18d9b 41px 74px,transparent 74px 82px)}
+.waddr h3{color:var(--sp);font-size:18px;font-weight:400;display:flex;align-items:center;gap:8px;margin-bottom:18px}
+.waddr .ln{display:flex;align-items:center;gap:20px;font-size:16px}
+.waddr .ln b{font-weight:700}
+.waddr .def{border:1px solid var(--sp);color:var(--sp);font-size:10px;padding:1px 5px}
+.waddr .chg{color:#05a;margin-left:auto}
+.wpo-h{display:grid;grid-template-columns:1fr 180px 140px 180px;padding:24px 30px 10px;color:#bbb;font-size:14px}
+.wpo-h>div:first-child{color:#222;font-size:18px}
+.wpo-h>div:not(:first-child),.wpo-i>div:not(:first-child){text-align:right}
+.wpo-shop{padding:14px 30px 0;display:flex;gap:8px;align-items:center;font-size:14px}
+.wpo-i{display:grid;grid-template-columns:1fr 180px 140px 180px;padding:14px 30px;align-items:center}
+.wpo-i .p{display:flex;gap:12px;align-items:center}
+.wpo-i .thumb{width:40px;height:40px}
+.wpo-i .vr{color:#888;margin-left:30px}
+.wpo-f{display:grid;grid-template-columns:1fr 1fr;background:#fafdff;border-top:1px dashed rgba(0,0,0,.09);border-bottom:1px dashed rgba(0,0,0,.09)}
+.wpo-f .msg{padding:18px 30px;display:flex;align-items:center;gap:14px;border-right:1px dashed rgba(0,0,0,.09)}
+.wpo-f .msg input{flex:1;height:36px;border:1px solid rgba(0,0,0,.14);border-radius:2px;padding:0 10px;font:inherit}
+.wpo-f .ship{padding:18px 30px;display:flex;gap:20px;align-items:flex-start;font-size:14px}
+.wpo-f .ship .d{color:#888;font-size:12px;margin-top:2px}
+.wpo-f .ship .g{color:var(--sp-green)}
+.wpo-f .ship a{color:#05a;margin-left:auto}
+.wpo-tot{padding:18px 30px;text-align:right;color:#888}
+.wpo-tot b{color:var(--sp);font-size:20px;font-weight:400;margin-left:16px}
+.wvou{padding:22px 30px;display:flex;align-items:center;gap:10px;font-size:18px}
+.wvou .v{margin-left:auto;font-size:14px;color:#222}
+.wpm-h{padding:26px 30px;display:flex;align-items:center;gap:26px;border-bottom:1px solid var(--sp-line);flex-wrap:wrap}
+.wpm-h h3{font-size:18px;font-weight:400;width:170px}
+.wpm-opt{border:1px solid rgba(0,0,0,.09);border-radius:2px;padding:8px 14px;font-size:14px;position:relative;background:#fff;display:flex;align-items:center;gap:6px}
+.wpm-opt:hover{border-color:var(--sp);color:var(--sp)}
+.wpm-opt.on{border-color:var(--sp);color:var(--sp)}
+.wpm-opt.on::after{content:"";position:absolute;right:0;bottom:0;border:7px solid transparent;border-right-color:var(--sp);border-bottom-color:var(--sp)}
+.wpm-body{padding:22px 30px 22px 226px;border-bottom:1px dashed rgba(0,0,0,.09);font-size:14px;color:#555}
+.wcr{display:grid;grid-template-columns:120px 1fr;gap:14px 20px;align-items:center;max-width:720px}
+.wcr .lbl{color:#888}
+.wcr .coins{grid-template-columns:repeat(3,150px);margin:0}
+.wcr .nets{grid-template-columns:repeat(2,190px);margin:0}
+.wcr .val{color:#222}
+.wcr .fine{grid-column:2;font-size:12px;color:#888}
+.wterms{grid-column:2;display:flex;gap:8px;font-size:13px;color:#555;align-items:flex-start}
+.wterms a{color:#05a;text-decoration:none}
+.wsum{display:grid;grid-template-columns:1fr 200px;gap:12px 0;padding:22px 30px;background:#fffefb;text-align:right;font-size:14px;color:#888}
+.wsum .v{color:#222}
+.wsum .big{color:var(--sp);font-size:28px}
+.wsum .cr{color:var(--tf)}
+.wplace{display:flex;align-items:center;padding:22px 30px;border-top:1px dashed rgba(0,0,0,.09);font-size:14px;color:#555}
+.wplace .wbtn{margin-left:auto}
+
+/* modal */
+.wmodal{position:absolute;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:30}
+.wmodal.on{display:flex}
+.wdlg{width:520px;background:#fff;border-radius:3px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.wdlg h3{font-size:22px;font-weight:400;margin-bottom:6px}
+.wdlg .lead{color:#888;margin-bottom:22px}
+.wdlg .wstep{margin-bottom:16px}
+.wdlg .acts{display:flex;justify-content:flex-end;margin-top:6px}
+
+/* payment */
+.wpay{width:980px;margin:24px auto 0;background:#fff;border-radius:3px;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+.wpay-top{display:flex;justify-content:space-between;align-items:center;padding:24px 30px;border-bottom:1px solid var(--sp-line)}
+.wpay-top .l{color:#888}
+.wpay-top .amt{font-size:30px;color:var(--sp);margin-top:2px}
+.wpay-top .brl{color:#888;font-size:13px}
+.wpay-top .tm{text-align:right;color:#555}
+.wpay-top .tm b{display:block;font-size:26px;color:var(--sp);font-weight:500;font-variant-numeric:tabular-nums}
+.wpay-body{display:grid;grid-template-columns:300px 1fr;gap:40px;padding:30px}
+.wpay-body .qr-wrap{justify-content:flex-start}
+.wpay-body .qr{width:240px;height:240px}
+.wpay-body .qr-over{width:240px}
+.wpay-body .cc{text-align:left}
+.wpay-body .kv:first-of-type{margin-top:0}
+.wpay-foot{padding:0 30px 30px;display:flex;gap:12px}
+
+/* results */
+.wres{width:720px;margin:40px auto 0;background:#fff;border-radius:3px;box-shadow:0 1px 1px rgba(0,0,0,.05);padding:40px 50px;text-align:center}
+.wres .big{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px}
+.wres .big.ok{background:#e8f7f4;color:var(--sp-green)}
+.wres .big.exp{background:#fff1ec;color:var(--sp)}
+.wres h3{font-size:24px;font-weight:400}
+.wres p{color:#888;margin-top:6px}
+.wres .tl{text-align:left;max-width:360px;margin:26px auto 0}
+.wres .acts{display:flex;gap:12px;justify-content:center;margin-top:26px}
+.wres .late{margin:22px auto 0;max-width:460px;font-size:13px;color:#888;border-top:1px solid var(--sp-line);padding-top:16px}
+.wres .late b{color:#222;font-weight:500;display:block;margin-bottom:2px}
+.wfooter{height:60px}
+.wtoast{position:absolute;left:50%;top:40%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;padding:12px 20px;border-radius:4px;font-size:14px;z-index:40;display:none}
+.wtoast.on{display:block}
+.bwin{position:relative}
 </style>
 </head>
 <body>
@@ -270,7 +440,11 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
     <div>
       <span class="tag">Transfero concept prototype</span>
       <h1>Crypto payments inside the Shopee checkout</h1>
-      <p>How Transfero Checkout, consumed via API, would appear as one more native payment method in the app, with no redirect and no new tab. Amounts, address and QR code are fictitious.</p>
+      <p>How Transfero Checkout, consumed via API, would appear as one more native payment method in the Shopee app and website, with no redirect and no new tab. Amounts, address and QR code are fictitious.</p>
+    </div>
+    <div class="modesw" role="group" aria-label="Version">
+      <button data-mode="app" class="on"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>Mobile app</button>
+      <button data-mode="web"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>Web</button>
     </div>
   </header>
 
@@ -539,6 +713,201 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
     </div>
   </div>
 
+
+  <!-- center: web -->
+  <div class="browser" id="browser">
+    <div class="bchrome">
+      <div class="bdots"><i></i><i></i><i></i></div>
+      <div class="burl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg><b id="wurl">shopee.com.br/cart</b></div>
+      <span class="bflag">PROTOTYPE</span>
+    </div>
+    <div class="bwin"><div class="bview" id="bview">
+      <div class="bcanvas" id="bcanvas">
+
+        <!-- top strip (all pages) -->
+        <div class="wtop"><div class="in"><div><span>Seller Centre</span><span>Start Selling</span><span>Download</span><span>Follow us</span></div><div><span>Notifications</span><span>Help</span><span>English</span><span>Marina Costa</span></div></div></div>
+
+        <!-- cart -->
+        <section class="wpage" data-w="cart">
+          <div class="whead"><div class="in">
+            <div class="wlogo"><svg viewBox="0 0 40 44"><path d="M6 14h28l-2 26H8z" fill="#ee4d2d"/><path d="M13 14a7 7 0 0114 0" fill="none" stroke="#ee4d2d" stroke-width="3"/><text x="20" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Roboto,sans-serif">S</text></svg>Shopee</div>
+            <div class="wtitle">Shopping Cart</div>
+            <div class="wsearch"><input value="" placeholder="Free shipping on orders over R$19" aria-label="Search"><button aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div>
+          </div></div>
+          <div class="wmain">
+            <div class="wcard" style="padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:14px"><svg class="ico" viewBox="0 0 24 24" style="color:var(--sp-green)"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>Free shipping on orders over R$19 with voucher</div>
+            <div class="wcard wgrid wth"><div><span class="chk on"></span></div><div>Product</div><div>Unit Price</div><div>Quantity</div><div>Total Price</div><div>Actions</div></div>
+
+            <div class="wcard">
+              <div class="wshop"><span class="chk on"></span><span class="mall">Mall</span>SomBox Official Store</div>
+              <div class="wgrid witem"><div><span class="chk on"></span></div>
+                <div class="wprod"><div class="thumb"><svg width="44" height="44" viewBox="0 0 44 44"><path d="M10 24a12 12 0 0124 0" fill="none" stroke="#444" stroke-width="3"/><rect x="7" y="23" width="7" height="12" rx="3" fill="#333"/><rect x="30" y="23" width="7" height="12" rx="3" fill="#333"/></svg></div><div class="nm">Wireless Bluetooth 5.3 Headphones with Noise Cancelling</div><div class="vr">Variation: Black ▾</div></div>
+                <div class="wprice"><span class="old">R$129.90</span>R$89.90</div><div><span class="wqty"><span>−</span><span>1</span><span>+</span></span></div><div class="wtot">R$89.90</div><div class="wdel">Delete</div></div>
+              <div class="wgrid witem"><div><span class="chk on"></span></div>
+                <div class="wprod"><div class="thumb"><svg width="44" height="44" viewBox="0 0 44 44"><rect x="13" y="5" width="18" height="34" rx="4" fill="#f4b5c4"/><circle cx="18" cy="10" r="2" fill="#555"/></svg></div><div class="nm">Soft-Touch Silicone Case for iPhone 15</div><div class="vr">Variation: Pink ▾</div></div>
+                <div class="wprice">R$19.90</div><div><span class="wqty"><span>−</span><span>2</span><span>+</span></span></div><div class="wtot">R$39.80</div><div class="wdel">Delete</div></div>
+              <div class="wshopfoot"><svg class="ico vc" viewBox="0 0 24 24"><path d="M3 7h18v4a2 2 0 000 4v4H3v-4a2 2 0 000-4z"/></svg><span class="vc">R$10 voucher applied</span><a href="#" onclick="return false">More vouchers</a></div>
+            </div>
+
+            <div class="wcard">
+              <div class="wshop"><span class="chk on"></span><span class="pref">Preferred</span>Home &amp; Style</div>
+              <div class="wgrid witem"><div><span class="chk on"></span></div>
+                <div class="wprod"><div class="thumb"><svg width="44" height="44" viewBox="0 0 44 44"><rect x="15" y="9" width="14" height="30" rx="5" fill="#6a8caf"/><rect x="16" y="4" width="12" height="6" rx="2" fill="#333"/></svg></div><div class="nm">Double-Wall Stainless Steel Bottle 1L</div><div class="vr">Variation: Blue ▾</div></div>
+                <div class="wprice">R$59.90</div><div><span class="wqty"><span>−</span><span>1</span><span>+</span></span></div><div class="wtot">R$59.90</div><div class="wdel">Delete</div></div>
+            </div>
+          </div>
+          <div class="wbar"><div class="in">
+            <span class="vb"><span class="chk on"></span>Select All (4)</span><span>Delete</span>
+            <div class="tot">Total (4 items): <b>R$179.60</b><div class="sv">Saved <b>R$50.00</b></div></div>
+            <button class="wbtn" data-wgo="checkout">Check Out</button>
+          </div></div>
+        </section>
+
+        <!-- checkout -->
+        <section class="wpage" data-w="checkout">
+          <div class="whead"><div class="in">
+            <div class="wlogo"><svg viewBox="0 0 40 44"><path d="M6 14h28l-2 26H8z" fill="#ee4d2d"/><path d="M13 14a7 7 0 0114 0" fill="none" stroke="#ee4d2d" stroke-width="3"/><text x="20" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Roboto,sans-serif">S</text></svg>Shopee</div>
+            <div class="wtitle">Checkout</div>
+          </div></div>
+          <div class="wmain">
+            <div class="wcard waddr">
+              <h3><svg class="ico" viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 0114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Delivery Address</h3>
+              <div class="ln"><b>Marina Costa (+55) 21 9****-4410</b><span>190 Voluntários da Pátria St, Apt 802, Botafogo, Rio de Janeiro - RJ, 22270-010</span><span class="def">Default</span><span class="chg">Change</span></div>
+            </div>
+
+            <div class="wcard">
+              <div class="wpo-h"><div>Products Ordered</div><div>Unit Price</div><div>Amount</div><div>Item Subtotal</div></div>
+              <div class="wpo-shop"><span class="mall">Mall</span>SomBox Official Store</div>
+              <div class="wpo-i"><div class="p"><div class="thumb"><svg width="28" height="28" viewBox="0 0 44 44"><path d="M10 24a12 12 0 0124 0" fill="none" stroke="#444" stroke-width="3"/><rect x="7" y="23" width="7" height="12" rx="3" fill="#333"/><rect x="30" y="23" width="7" height="12" rx="3" fill="#333"/></svg></div>Wireless Bluetooth 5.3 Headphones<span class="vr">Variation: Black</span></div><div>R$89.90</div><div>1</div><div>R$89.90</div></div>
+              <div class="wpo-i"><div class="p"><div class="thumb"><svg width="28" height="28" viewBox="0 0 44 44"><rect x="13" y="5" width="18" height="34" rx="4" fill="#f4b5c4"/></svg></div>Soft-Touch Silicone Case iPhone 15<span class="vr">Variation: Pink</span></div><div>R$19.90</div><div>2</div><div>R$39.80</div></div>
+              <div class="wpo-f"><div class="msg">Message: <input placeholder="(Optional) Leave a message to the seller" aria-label="Message"></div><div class="ship"><div>Shipping Option:</div><div><div>Standard</div><div class="g">Free shipping applied</div><div class="d">Arrives Sep 26 - Sep 30</div></div><a href="#" onclick="return false">Change</a><div>R$0.00</div></div></div>
+              <div class="wpo-tot">Order Total (3 items): <b>R$129.70</b></div>
+            </div>
+
+            <div class="wcard">
+              <div class="wpo-shop" style="padding-top:20px"><span class="pref">Preferred</span>Home &amp; Style</div>
+              <div class="wpo-i"><div class="p"><div class="thumb"><svg width="28" height="28" viewBox="0 0 44 44"><rect x="15" y="9" width="14" height="30" rx="5" fill="#6a8caf"/></svg></div>Double-Wall Stainless Steel Bottle 1L<span class="vr">Variation: Blue</span></div><div>R$59.90</div><div>1</div><div>R$59.90</div></div>
+              <div class="wpo-f"><div class="msg">Message: <input placeholder="(Optional) Leave a message to the seller" aria-label="Message"></div><div class="ship"><div>Shipping Option:</div><div><div>Standard</div><div class="d">Arrives Sep 27 - Oct 1</div></div><a href="#" onclick="return false">Change</a><div>R$12.90</div></div></div>
+              <div class="wpo-tot">Order Total (1 item): <b>R$72.80</b></div>
+            </div>
+
+            <div class="wcard wvou"><svg class="ico" viewBox="0 0 24 24" style="color:var(--sp)"><path d="M3 7h18v4a2 2 0 000 4v4H3v-4a2 2 0 000-4z"/></svg>Shopee Voucher<span class="v">−R$10.00</span></div>
+
+            <div class="wcard" id="wpm">
+              <div class="wpm-h">
+                <h3>Payment Method</h3>
+                <button class="wpm-opt" data-wm="pix">Pix</button>
+                <button class="wpm-opt" data-wm="card">Credit / Debit Card</button>
+                <button class="wpm-opt" data-wm="boleto">Boleto</button>
+                <button class="wpm-opt" data-wm="crypto"><span id="wCryptoIco" style="display:flex"></span>Crypto<span class="new">NEW</span></button>
+              </div>
+              <div class="wpm-body" id="wpmBody"></div>
+              <div class="wsum">
+                <div>Merchandise Subtotal:</div><div class="v">R$189.60</div>
+                <div>Shipping Total:</div><div class="v">R$12.90</div>
+                <div>Voucher Discount:</div><div class="v">−R$10.00</div>
+                <div style="align-self:center">Total Payment:</div><div class="big">R$192.50</div>
+                <div class="cr" id="wSumCrL" hidden>In crypto (estimate):</div><div class="cr" id="wSumCr" hidden></div>
+              </div>
+              <div class="wplace"><span id="wPlaceNote">By clicking "Place Order", you agree to the store Terms of Service.</span><button class="wbtn" id="wPlace" disabled>Place Order</button></div>
+            </div>
+            <div class="wfooter"></div>
+          </div>
+        </section>
+
+        <!-- payment -->
+        <section class="wpage" data-w="payment">
+          <div class="whead"><div class="in">
+            <div class="wlogo"><svg viewBox="0 0 40 44"><path d="M6 14h28l-2 26H8z" fill="#ee4d2d"/><path d="M13 14a7 7 0 0114 0" fill="none" stroke="#ee4d2d" stroke-width="3"/><text x="20" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Roboto,sans-serif">S</text></svg>Shopee</div>
+            <div class="wtitle">Payment</div>
+          </div></div>
+          <div class="wpay">
+            <div class="wpay-top">
+              <div><div class="l">Send exactly</div><div class="amt" id="wPayAmt"></div><div class="brl">R$192.50 · Order 260923K8P4QX</div></div>
+              <div class="tm">Pay within<b id="wTimer">05:00</b></div>
+            </div>
+            <div class="progress" style="margin:0"><i id="wProg" style="width:100%"></i></div>
+            <div class="wpay-body">
+              <div>
+                <div class="qr-wrap">
+                  <svg class="qr" id="wqr" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg>
+                  <div class="qr-over" id="wQrOver"><div class="spin"></div>Verifying payment...</div>
+                </div>
+                <div class="cc">
+                  <div class="cc-lbl">Or use the copy-and-paste code</div>
+                  <div class="cc-code" id="wCcCode"></div>
+                  <button class="btn-or cc-btn" id="wCcCopy"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copy code</button>
+                </div>
+              </div>
+              <div>
+                <div class="kv"><span class="k">Currency</span><span class="vv" id="wPayCoin"></span></div>
+                <div class="kv"><span class="k">Network</span><span class="vv">Polygon</span></div>
+                <div class="kv"><span class="k">Address</span><span class="vv"><span style="font-family:ui-monospace,Consolas,monospace;font-size:12px">0xDEMO…PR0T0</span><button class="copy" data-toast="Address copied">Copy</button></span></div>
+                <div class="kv"><span class="k">Amount</span><span class="vv"><span id="wPayAmt2"></span><button class="copy" data-toast="Amount copied">Copy</button></span></div>
+                <div class="warn"><b>Attention:</b> send only <b id="wWarnCoin"></b> on the <b>Polygon</b> network. Prefer a non-custodial wallet (one where you control the keys). Transfers on another network or for a different amount may be lost.</div>
+                <div class="pay-status" id="wPayStatus"></div>
+              </div>
+            </div>
+            <div class="wpay-foot"><button class="wbtn ghost" data-wgo="checkout">Change payment method</button></div>
+          </div>
+          <div class="wfooter"></div>
+        </section>
+
+        <!-- success -->
+        <section class="wpage" data-w="success">
+          <div class="whead"><div class="in">
+            <div class="wlogo"><svg viewBox="0 0 40 44"><path d="M6 14h28l-2 26H8z" fill="#ee4d2d"/><path d="M13 14a7 7 0 0114 0" fill="none" stroke="#ee4d2d" stroke-width="3"/><text x="20" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Roboto,sans-serif">S</text></svg>Shopee</div>
+            <div class="wtitle">Order placed</div>
+          </div></div>
+          <div class="wres">
+            <div class="big ok"><svg class="ico" viewBox="0 0 24 24" style="width:38px;height:38px"><path d="M5 12l5 5 9-10"/></svg></div>
+            <h3>Payment approved</h3>
+            <p id="wOkLine"></p>
+            <p>Order 260923K8P4QX · R$192.50</p>
+            <div class="tl">
+              <div class="ok"><span>Payment received on the blockchain<div class="s">Now</div></span></div>
+              <div class="cur" id="wTlSettle"><span>Confirming with Transfero<div class="s">Released to the seller shortly</div></span></div>
+              <div><span>Seller prepares shipment<div class="s">Within 2 business days</div></span></div>
+              <div><span>In transit</span></div>
+            </div>
+            <div class="acts"><button class="wbtn" data-wgo="cart">Back to home</button><button class="wbtn ghost">View order</button></div>
+          </div>
+        </section>
+
+        <!-- expired -->
+        <section class="wpage" data-w="expired">
+          <div class="whead"><div class="in">
+            <div class="wlogo"><svg viewBox="0 0 40 44"><path d="M6 14h28l-2 26H8z" fill="#ee4d2d"/><path d="M13 14a7 7 0 0114 0" fill="none" stroke="#ee4d2d" stroke-width="3"/><text x="20" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Roboto,sans-serif">S</text></svg>Shopee</div>
+            <div class="wtitle">Payment</div>
+          </div></div>
+          <div class="wres">
+            <div class="big exp"><svg class="ico" viewBox="0 0 24 24" style="width:36px;height:36px"><circle cx="12" cy="13" r="8"/><path d="M12 9v4M9 2h6"/></svg></div>
+            <h3>The payment window has ended</h3>
+            <p>The quote expired before payment. Your order is still saved: generate a new QR code with the updated amount.</p>
+            <div class="acts"><button class="wbtn" id="wRegen">Generate new QR code</button><button class="wbtn ghost" data-wgo="checkout">Choose another method</button></div>
+            <div class="late"><b>Already sent the crypto?</b>If you sent a payment after the timer ended, contact support with your order number.</div>
+          </div>
+        </section>
+
+      </div>
+      </div>
+      <!-- welcome modal -->
+      <div class="wmodal" id="wWelcome">
+        <div class="wdlg" role="dialog" aria-labelledby="wWT">
+          <h3 id="wWT">Pay with crypto</h3>
+          <p class="lead">Use your wallet balance to shop on Shopee. No extra sign-up.</p>
+          <div class="wstep"><span class="b">1</span><div><div class="tt">Choose the currency</div><div class="dd">USDT, USDC or BRZ. We show how much you will pay before you confirm.</div></div></div>
+          <div class="wstep"><span class="b">2</span><div><div class="tt">Place the order and send</div><div class="dd">Scan the QR code or copy the address into the wallet of your choice.</div></div></div>
+          <div class="wstep"><span class="b">3</span><div><div class="tt">Automatic confirmation</div><div class="dd">We detect the payment within minutes and your order moves on to the seller.</div></div></div>
+          <div class="w-hl">The crypto amount is locked when you place the order. Pay before the timer ends.</div>
+          <div class="acts"><button class="wbtn" id="wWOk">Got it</button></div>
+          <div class="powered" style="justify-content:flex-end;margin-top:10px">Payment processed by Transfero</div>
+        </div>
+      </div>
+      <div class="wtoast" id="wtoast"></div>
+    </div>
+  </div>
+
   <!-- right: API -->
   <aside class="side api">
     <div class="card">
@@ -733,7 +1102,7 @@ function simulatePaid(){
 }
 
 /* QR placeholder (visual only, not scannable) */
-function drawQR(seed){
+function drawQR(seed,sel='#qr'){
   let h=0; for(const ch of seed) h=(h*31+ch.charCodeAt(0))>>>0;
   const rnd=()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return (h>>>0)/4294967296};
   let r='<rect width="29" height="29" fill="#fff"/>';
@@ -744,13 +1113,14 @@ function drawQR(seed){
   }
   r+=finder(0,0)+finder(22,0)+finder(0,22);
   r+=`<rect x="12" y="12" width="5" height="5" rx="1" fill="#fff"/><image href="${ICONS[S.coin]}" x="12.3" y="12.3" width="4.4" height="4.4"/>`;
-  $('#qr').innerHTML=r;
+  $(sel).innerHTML=r;
 }
 
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1400)}
 
 /* ---------- events ---------- */
 document.addEventListener('click',e=>{
+  if(e.target.closest('#browser')||e.target.closest('[data-mode]')) return;
   const g=e.target.closest('[data-go]'); if(g){go(g.dataset.go);return}
   const m=e.target.closest('#mList .m');
   if(m){S.draftMethod=m.dataset.m;renderMethods();
@@ -758,7 +1128,7 @@ document.addEventListener('click',e=>{
     return}
   const c=e.target.closest('[data-coin]'); if(c){S.coin=c.dataset.coin;renderMethods();renderApi('methods');return}
   const t=e.target.closest('[data-toast]'); if(t){toast(t.dataset.toast);return}
-  const st=e.target.closest('[data-step]'); if(st){jump(st.dataset.step);return}
+  const st=e.target.closest('[data-step]'); if(st){(MODE==='web'?wjump:jump)(st.dataset.step);return}
 });
 $('#wOk').onclick=()=>{S.welcomeSeen=true;$('#welcome').classList.remove('on');stepKey='methods';renderSteps();renderApi('methods')};
 $('#welcome').onclick=e=>{if(e.target.id==='welcome')$('#wOk').click()};
@@ -770,9 +1140,9 @@ $('#placeOrder').onclick=()=>{
 };
 $('#ccCopy').onclick=()=>{const t=$('#ccCode').textContent;try{navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}toast('Code copied')};
 $('#regen').onclick=startPayment;
-$('#dSimPay').onclick=simulatePaid;
-$('#dSimExp').onclick=()=>{ if(S.view!=='payment'){S.method='crypto';startPayment();} S.deadline=Date.now(); updateTimer(); };
-$('#dReset').onclick=()=>{Object.assign(S,{method:null,coin:'USDT',welcomeSeen:false});$('#termsChk').classList.add('on');go('cart')};
+$('#dSimPay').onclick=()=>MODE==='web'?wsimulatePaid():simulatePaid();
+$('#dSimExp').onclick=()=>{ if(MODE==='web'){ if(W.view!=='payment'){S.method='crypto';wstartPayment();} W.deadline=Date.now(); wupdateTimer(); return; } if(S.view!=='payment'){S.method='crypto';startPayment();} S.deadline=Date.now(); updateTimer(); };
+$('#dReset').onclick=()=>{Object.assign(S,{method:null,coin:'USDT',welcomeSeen:false});$('#termsChk').classList.add('on');W.terms=undefined;if(MODE==='web')wjump('cart');else go('cart')};
 
 function jump(k){
   $('#welcome').classList.remove('on');
@@ -789,6 +1159,135 @@ function jump(k){
   if(k==='success'){ $('#okLine').textContent=`We received ${fmt(amt(S.coin))} ${S.coin}.`; go('success'); }
   if(k==='expired'){ startPayment(); S.deadline=Date.now(); updateTimer(); }
 }
+
+
+/* ---------- web (desktop) mode ---------- */
+let MODE='app';
+const W={view:'cart',deadline:0,tick:null,timers:[]};
+const wlater=(fn,ms)=>W.timers.push(setTimeout(fn,ms));
+const wclear=()=>{W.timers.forEach(clearTimeout);W.timers=[]};
+const WURL={cart:'cart',checkout:'checkout',payment:'checkout/payment',success:'user/purchase/order',expired:'checkout/payment'};
+
+function fitBrowser(){
+  const v=$('#bview'); if(!v||!v.clientWidth) return;
+  $('#bcanvas').style.zoom=Math.min(1,v.clientWidth/1200);
+}
+function wgo(v,step){
+  if(v!=='payment') wstopTimer();
+  document.querySelectorAll('.wpage').forEach(e=>e.classList.toggle('on',e.dataset.w===v));
+  W.view=v; $('#bview').scrollTop=0;
+  $('#wurl').textContent='shopee.com.br/'+WURL[v];
+  if(v==='checkout') wrenderCheckout();
+  stepKey=step||v; renderSteps(); renderApi(stepKey);
+}
+function wrenderCheckout(){
+  const c=S.method==='crypto';
+  document.querySelectorAll('.wpm-opt').forEach(b=>b.classList.toggle('on',b.dataset.wm===S.method));
+  const body=$('#wpmBody');
+  const txt={pix:'Pay with the Pix QR code shown after you place the order. Approval is instant.',card:'Add a credit or debit card. Up to 12 installments.',boleto:'The boleto is generated after you place the order. Approval within 3 business days.'};
+  if(!S.method) body.innerHTML='Select a payment method.';
+  else if(!c) body.textContent=txt[S.method];
+  else{
+    const nets=document.querySelectorAll('.phone .nets .net img');
+    body.innerHTML=`<div class="wcr">
+      <div class="lbl">Currency</div>
+      <div class="coins">${Object.keys(COINS).map(k=>`<button class="coin ${k===S.coin?'on':''}" data-wcoin="${k}">${coinIcon(k,24)}<span>${k}</span><span class="cs">${fmt(amt(k))}</span></button>`).join('')}</div>
+      <div class="lbl">Network</div>
+      <div class="nets"><button class="net on" type="button"><img src="${nets[0].src}" width="22" height="22" alt=""><span>Polygon</span></button><button class="net" type="button" disabled><img src="${nets[1].src}" width="22" height="22" alt=""><span>Ethereum</span><span class="soon">Coming soon</span></button></div>
+      <div class="lbl">You pay approx.</div><div class="val">≈ ${fmt(amt(S.coin))} ${S.coin}</div>
+      <div class="lbl">Rate</div><div class="val">${S.coin==='BRZ'?'1 BRZ = R$1.00':`1 ${S.coin} ≈ R$${fmt(COINS[S.coin].rate)}`}</div>
+      <div class="fine">Final amount is locked when you place the order. Pay before the timer ends. Processed by Transfero.</div>
+      <div class="wterms"><span class="chk ${W.terms===false?'':'on'}" id="wTermsChk" style="margin-top:1px;cursor:pointer"></span><span>I have read and agree to Transfero's <a href="#" onclick="return false">terms of use</a> and <a href="#" onclick="return false">privacy policy</a>. Transfero processes the crypto payment. Blockchain transactions are final; refunds follow Shopee's policy.</span></div>
+    </div>`;
+  }
+  $('#wSumCrL').hidden=!c; $('#wSumCr').hidden=!c;
+  $('#wSumCr').textContent=c?`≈ ${fmt(amt(S.coin))} ${S.coin}`:'';
+  $('#wPlace').disabled=!S.method||(c&&W.terms===false);
+}
+function wshowWelcome(){ $('#wWelcome').classList.add('on'); stepKey='welcome'; renderSteps(); renderApi('welcome'); }
+function wloading(ms,then){ wlater(then,ms); }
+function wstartPayment(){
+  wclear();
+  const a=`${fmt(amt(S.coin))} ${S.coin}`;
+  $('#wPayAmt').textContent=a; $('#wPayAmt2').textContent=a;
+  $('#wPayCoin').innerHTML=`${coinIcon(S.coin,18)} ${S.coin}`;
+  $('#wWarnCoin').textContent=S.coin;
+  $('#wQrOver').classList.remove('on');
+  $('#wPayStatus').innerHTML='<span class="dot"></span>Awaiting payment. Confirmation is automatic.';
+  $('#wCcCode').textContent='ethereum:0xDEMO000000000000000000000000000000PR0T0';
+  drawQR(S.coin,'#wqr');
+  W.deadline=Date.now()+5*60*1000;
+  wstopTimer(); wupdateTimer(); W.tick=setInterval(wupdateTimer,1000);
+  wgo('payment');
+}
+function wupdateTimer(){
+  const left=Math.max(0,W.deadline-Date.now()),s=Math.ceil(left/1000);
+  $('#wTimer').textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  $('#wProg').style.width=(left/3000)+'%';
+  if(left<=0){wstopTimer();wclear();wgo('expired');}
+}
+function wstopTimer(){clearInterval(W.tick);W.tick=null}
+function wsimulatePaid(){
+  if(W.view!=='payment'){ S.method='crypto'; wstartPayment(); }
+  wstopTimer();
+  $('#wQrOver').classList.add('on');
+  $('#wPayStatus').innerHTML='<span class="dot" style="background:var(--sp-green)"></span>Transaction found on the Polygon network';
+  stepKey='verifying'; renderSteps(); renderApi('verifying');
+  wlater(()=>{
+    $('#wOkLine').textContent=`We received ${fmt(amt(S.coin))} ${S.coin}.`;
+    const t=$('#wTlSettle'); t.className='cur'; t.innerHTML='<span>Confirming with Transfero<div class="s">Released to the seller shortly</div></span>';
+    wgo('success');
+    wlater(()=>{ t.className='ok'; t.innerHTML='<span>Payment confirmed<div class="s">Order released to the seller</div></span>'; },2200);
+  },2200);
+}
+function wtoast(t){const e=$('#wtoast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1400)}
+function wjump(k){
+  wclear(); $('#wWelcome').classList.remove('on');
+  if(k==='cart'){wgo('cart');return}
+  if(k==='checkout'){wgo('checkout');return}
+  if(k==='methods'||k==='welcome'){
+    S.method='crypto'; wgo('checkout','methods');
+    $('#bview').scrollTop=$('#wpm').offsetTop*(parseFloat($('#bcanvas').style.zoom)||1)-20;
+    if(k==='welcome') wshowWelcome();
+    return;
+  }
+  S.method='crypto';
+  if(k==='payment') wstartPayment();
+  if(k==='verifying') wsimulatePaid();
+  if(k==='success'){ $('#wOkLine').textContent=`We received ${fmt(amt(S.coin))} ${S.coin}.`; wgo('success'); }
+  if(k==='expired'){ wstartPayment(); W.deadline=Date.now(); wupdateTimer(); }
+}
+function setMode(m){
+  if(m===MODE) return;
+  MODE=m;
+  document.querySelectorAll('.modesw button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  $('.wrap').classList.toggle('web',m==='web');
+  const k=stepKey==='verifying'?'payment':stepKey;
+  if(m==='web'){ stopTimer(); $('#welcome').classList.remove('on'); fitBrowser(); wjump(k); }
+  else { wstopTimer(); wclear(); $('#wWelcome').classList.remove('on'); jump(k); }
+}
+
+document.addEventListener('click',e=>{
+  const md=e.target.closest('[data-mode]'); if(md){setMode(md.dataset.mode);return}
+  if(!e.target.closest('#browser')) return;
+  const g=e.target.closest('[data-wgo]'); if(g){wclear();wgo(g.dataset.wgo);return}
+  const m=e.target.closest('[data-wm]');
+  if(m){ S.method=m.dataset.wm; wrenderCheckout();
+    if(S.method==='crypto'){ stepKey='methods'; renderSteps(); renderApi('methods'); if(!S.welcomeSeen) wshowWelcome(); }
+    else { stepKey='checkout'; renderSteps(); renderApi('checkout'); }
+    return }
+  const c=e.target.closest('[data-wcoin]'); if(c){S.coin=c.dataset.wcoin;wrenderCheckout();renderApi('methods');return}
+  if(e.target.closest('#wTermsChk')){ W.terms=W.terms===false; wrenderCheckout(); return }
+  const t=e.target.closest('[data-toast]'); if(t){wtoast(t.dataset.toast);return}
+});
+$('#wWOk').onclick=()=>{S.welcomeSeen=true;$('#wWelcome').classList.remove('on');stepKey='methods';renderSteps();renderApi('methods')};
+$('#wWelcome').onclick=e=>{if(e.target.id==='wWelcome')$('#wWOk').click()};
+$('#wPlace').onclick=()=>{ if(S.method==='crypto') wstartPayment(); else wtoast('Only the crypto flow is implemented in this prototype'); };
+$('#wCcCopy').onclick=()=>{const t=$('#wCcCode').textContent;try{navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}wtoast('Code copied')};
+$('#wRegen').onclick=wstartPayment;
+$('#wCryptoIco').innerHTML=document.querySelector('#mList [data-m=crypto] .mi').innerHTML.replace(/width="24" height="24"/,'width="18" height="18"');
+window.addEventListener('resize',fitBrowser);
+if(window.ResizeObserver) new ResizeObserver(fitBrowser).observe($('#bview'));
 
 go('cart');
 </script>
