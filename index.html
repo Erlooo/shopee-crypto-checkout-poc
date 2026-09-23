@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopee Crypto POC</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#eef0f3; --panel:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#dde1e6;
+  --tf:#3d3dff; --tf-soft:#ecebff; --code:#0f172a; --code-ink:#e2e8f0;
+  /* Shopee */
+  --sp:#ee4d2d; --sp-dark:#d73211; --sp-soft:#fff1ec; --sp-bg:#f5f5f5; --sp-ink:#222; --sp-muted:#757575; --sp-line:#ececec; --sp-green:#26aa99;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --page:#14161a; --panel:#1d2025; --ink:#e7e9ec; --muted:#9aa1ab; --line:#2c3037; --tf-soft:#23224a; }
+}
+:root[data-theme="dark"]{ --page:#14161a; --panel:#1d2025; --ink:#e7e9ec; --muted:#9aa1ab; --line:#2c3037; --tf-soft:#23224a; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:Roboto,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.4}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+
+/* ---------- page layout ---------- */
+.wrap{max-width:1280px;margin:0 auto;padding:24px 16px 48px;display:grid;grid-template-columns:260px 390px 1fr;gap:28px;align-items:start}
+.top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.top h1{font-size:20px;font-weight:700}
+.top p{color:var(--muted);max-width:720px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tf);background:var(--tf-soft);padding:3px 8px;border-radius:4px;margin-bottom:6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;font-weight:700}
+.steps{list-style:none;display:flex;flex-direction:column;gap:2px}
+.steps button{width:100%;text-align:left;padding:8px 10px;border-radius:8px;display:flex;gap:10px;align-items:flex-start}
+.steps button:hover{background:var(--tf-soft)}
+.steps button.on{background:var(--tf-soft);color:var(--tf);font-weight:500}
+.steps .n{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid currentColor;font-size:11px;display:grid;place-items:center;margin-top:1px}
+.ctrls{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.btn-demo{border:1px solid var(--line);border-radius:8px;padding:8px 10px;text-align:left;font-size:13px}
+.btn-demo:hover{border-color:var(--tf);color:var(--tf)}
+.side{display:flex;flex-direction:column;gap:16px}
+.note{font-size:12px;color:var(--muted)}
+
+/* API panel */
+.api-step{border-left:3px solid var(--tf);padding-left:12px;margin-bottom:14px}
+.api-step:last-child{margin-bottom:0}
+.api-step h3{font-size:14px;margin-bottom:4px}
+.api-step p{color:var(--muted);font-size:13px;margin-bottom:8px}
+.verb{font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:700;color:var(--tf);margin-right:6px}
+pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 12px;font:12px/1.5 ui-monospace,Consolas,monospace;overflow-x:auto;white-space:pre}
+.empty{color:var(--muted);font-size:13px}
+
+/* ---------- phone ---------- */
+.phone{width:390px;height:800px;background:#000;border-radius:44px;padding:10px;box-shadow:0 20px 50px rgba(0,0,0,.18);position:sticky;top:16px}
+.screen{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:var(--sp-bg);color:var(--sp-ink);font-size:14px;display:flex;flex-direction:column}
+.status{height:44px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font-size:14px;font-weight:600;background:#fff}
+.status.or{background:var(--sp);color:#fff}
+.poc-flag{position:absolute;top:13px;left:50%;transform:translateX(-50%);background:#000;color:#fff;font-size:9px;letter-spacing:.05em;padding:3px 8px;border-radius:10px;z-index:30;white-space:nowrap}
+.view{flex:1;display:none;flex-direction:column;min-height:0}
+.view.on{display:flex}
+.scroll{flex:1;overflow-y:auto;min-height:0}
+.scroll::-webkit-scrollbar{width:0}
+
+/* Shopee header */
+.hdr{height:48px;flex:none;background:#fff;display:flex;align-items:center;gap:10px;padding:0 12px;border-bottom:1px solid var(--sp-line)}
+.hdr.or{background:var(--sp);color:#fff;border:0}
+.hdr .back{width:28px;height:28px;display:grid;place-items:center;color:var(--sp)}
+.hdr.or .back{color:#fff}
+.hdr .t{font-size:17px;flex:1}
+.hdr .r{font-size:14px;color:var(--sp-ink)}
+.ico{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* cart */
+.shop{background:#fff;margin-top:10px}
+.shop-h{display:flex;align-items:center;gap:8px;padding:12px;border-bottom:1px solid var(--sp-line);font-weight:500}
+.mall{background:#d0011b;color:#fff;font-size:10px;font-weight:700;padding:1px 4px;border-radius:2px}
+.pref{background:var(--sp);color:#fff;font-size:10px;font-weight:700;padding:1px 4px;border-radius:2px}
+.shop-h .chev{color:var(--sp-muted);margin-left:-2px}
+.shop-h .edit{margin-left:auto;color:var(--sp-muted);font-weight:400}
+.chk{flex:none;width:18px;height:18px;border-radius:2px;border:1px solid #c8c8c8;display:grid;place-items:center;background:#fff}
+.chk.on{background:var(--sp);border-color:var(--sp)}
+.chk.on::after{content:"";width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.item{display:flex;gap:10px;padding:12px;align-items:flex-start}
+.item+.item{border-top:1px solid var(--sp-line)}
+.thumb{flex:none;width:80px;height:80px;border:1px solid var(--sp-line);display:grid;place-items:center;background:#fafafa}
+.item .info{flex:1;min-width:0}
+.item .name{font-size:14px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.var{display:inline-flex;align-items:center;gap:4px;background:#f5f5f5;color:var(--sp-muted);font-size:12px;padding:2px 6px;margin:6px 0;border-radius:2px}
+.prow{display:flex;align-items:center;justify-content:space-between}
+.price{color:var(--sp);font-size:15px}
+.price small{font-size:11px}
+.old{color:#9e9e9e;text-decoration:line-through;font-size:12px;margin-right:4px}
+.qty{display:flex;border:1px solid #dcdcdc;border-radius:2px}
+.qty span{width:28px;height:24px;display:grid;place-items:center;color:var(--sp-muted)}
+.qty span:nth-child(2){border-left:1px solid #dcdcdc;border-right:1px solid #dcdcdc;color:var(--sp-ink);width:34px}
+.shop-foot{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--sp-line);font-size:13px}
+.shop-foot .vc{color:var(--sp);display:flex;align-items:center;gap:6px}
+.shop-foot .more{margin-left:auto;color:#05a;font-size:13px}
+.ship-note{display:flex;gap:8px;align-items:center;padding:10px 12px;border-top:1px solid var(--sp-line);font-size:13px;color:var(--sp-ink)}
+.ship-note .g{color:var(--sp-green)}
+.voucher-bar{background:#fff;margin-top:10px;display:flex;align-items:center;gap:8px;padding:12px;font-size:14px}
+.voucher-bar .v{margin-left:auto;color:var(--sp-muted);font-size:13px}
+.cart-bar{flex:none;background:#fff;border-top:1px solid var(--sp-line);display:flex;align-items:center;height:56px;padding-left:12px;gap:8px}
+.cart-bar .all{display:flex;align-items:center;gap:6px;font-size:13px}
+.cart-bar .tot{margin-left:auto;text-align:right;font-size:13px;line-height:1.2}
+.cart-bar .tot b{color:var(--sp);font-size:16px;font-weight:500}
+.cart-bar .tot .sv{font-size:11px;color:var(--sp)}
+.cta{background:var(--sp);color:#fff;height:100%;padding:0 18px;font-size:15px;min-width:118px}
+.cta:hover{background:var(--sp-dark)}
+.cta:disabled{background:#f7a592;cursor:not-allowed}
+.tabbar{flex:none;height:56px;background:#fff;border-top:1px solid var(--sp-line);display:flex;justify-content:space-around;align-items:center;font-size:10px;color:var(--sp-muted)}
+.tabbar div{display:flex;flex-direction:column;align-items:center;gap:2px}
+
+/* checkout */
+.addr{background:#fff;position:relative;padding:14px 12px 18px;display:flex;gap:10px}
+.addr::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:repeating-linear-gradient(-45deg,#6fa6d6 0 16px,transparent 16px 20px,#f18d9b 20px 36px,transparent 36px 40px)}
+.addr .pin{color:var(--sp);flex:none;margin-top:1px}
+.addr .who{font-size:14px}
+.addr .who span{color:var(--sp-muted)}
+.addr .line{font-size:13px;color:var(--sp-ink);margin-top:2px}
+.addr .go{margin-left:auto;color:#bbb;align-self:center}
+.sec{background:#fff;margin-top:10px}
+.row{display:flex;align-items:center;gap:10px;padding:12px;min-height:46px}
+.row+.row{border-top:1px solid var(--sp-line)}
+.row .l{flex:1;min-width:0}
+.row .v{color:var(--sp-muted);font-size:13px;text-align:right}
+.row .go{color:#bbb;flex:none}
+.ship-box{margin:0 12px 12px;border:1px solid #bfe5de;background:#f0fbf9;border-radius:2px;padding:10px 12px;font-size:13px}
+.ship-box .t{display:flex;justify-content:space-between;font-weight:500}
+.ship-box .s{color:var(--sp-green);margin-top:2px}
+.ship-box .d{color:var(--sp-muted);font-size:12px;margin-top:2px}
+.mini{display:flex;gap:10px;padding:12px;background:#fafafa}
+.mini+.mini{border-top:1px solid #fff}
+.mini .thumb{width:60px;height:60px}
+.mini .n{font-size:13px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.mini .vv{font-size:12px;color:var(--sp-muted);margin:2px 0 6px}
+.mini .pp{display:flex;justify-content:space-between;font-size:13px}
+.pay-row .l{display:flex;align-items:center;gap:8px}
+.pay-sel{font-size:13px;color:var(--sp-ink);text-align:right;display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.sum{padding:12px;font-size:13px;display:flex;flex-direction:column;gap:6px}
+.sum h4{font-size:14px;font-weight:500;margin-bottom:4px}
+.sum .r{display:flex;justify-content:space-between;color:var(--sp-muted)}
+.sum .r.total{color:var(--sp-ink);font-size:15px;margin-top:4px}
+.sum .r.total b{color:var(--sp);font-weight:500}
+.sum .r.cr{color:var(--tf)}
+.terms{padding:12px;font-size:12px;color:var(--sp-muted);display:flex;gap:8px}
+.terms a{color:#05a;text-decoration:none}
+.co-bar{flex:none;background:#fff;border-top:1px solid var(--sp-line);display:flex;align-items:center;height:60px;padding-left:12px}
+.co-bar .tot{margin-left:auto;margin-right:12px;text-align:right;font-size:13px;line-height:1.25}
+.co-bar .tot b{color:var(--sp);font-size:18px;font-weight:500}
+.co-bar .tot .sv{font-size:11px;color:var(--sp)}
+
+/* methods */
+.m-list{background:#fff;margin-top:10px}
+.m{display:flex;align-items:center;gap:12px;padding:14px 12px;border-top:1px solid var(--sp-line);width:100%;text-align:left}
+.m:first-child{border-top:0}
+.m .mi{flex:none;width:28px;height:28px;display:grid;place-items:center}
+.m .ml{flex:1;min-width:0}
+.m .ml .s{font-size:12px;color:var(--sp-muted);margin-top:1px}
+.m.dis{opacity:.45}
+.radio{flex:none;width:18px;height:18px;border-radius:50%;border:1px solid #c8c8c8;position:relative}
+.radio.on{border-color:var(--sp)}
+.radio.on::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--sp)}
+.new{background:var(--sp);color:#fff;font-size:10px;font-weight:700;padding:1px 5px;border-radius:2px;margin-left:6px;vertical-align:2px}
+.cr-panel{background:#fff;padding:0 12px 14px 52px;display:none}
+.cr-panel.on{display:block}
+.cr-lbl{font-size:12px;color:var(--sp-muted);margin:4px 0 8px}
+.coins{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.coin{border:1px solid #dcdcdc;border-radius:2px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;position:relative}
+.coin .cs{font-size:11px;color:var(--sp-muted)}
+.coin.on{border-color:var(--sp);color:var(--sp)}
+.coin.on::after{content:"";position:absolute;right:0;bottom:0;border:8px solid transparent;border-right-color:var(--sp);border-bottom-color:var(--sp)}
+.via{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.via button{display:flex;align-items:center;gap:10px;border:1px solid #dcdcdc;border-radius:2px;padding:9px 10px;text-align:left;font-size:13px}
+.via button.on{border-color:var(--sp)}
+.via .free{background:#e8f7f4;color:var(--sp-green);font-size:11px;padding:1px 6px;border-radius:2px;margin-left:4px}
+.via .sub{display:block;font-size:11px;color:var(--sp-muted)}
+.cr-info{display:flex;justify-content:space-between;font-size:12px;color:var(--sp-muted);padding:8px 0;border-top:1px dashed var(--sp-line)}
+.cr-info b{color:var(--sp-ink);font-weight:500}
+.powered{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--sp-muted);margin-top:8px}
+.m-foot{flex:none;background:#fff;padding:10px 12px;border-top:1px solid var(--sp-line)}
+.btn-or{width:100%;height:42px;background:var(--sp);color:#fff;border-radius:2px;font-size:15px}
+.btn-or:hover{background:var(--sp-dark)}
+.btn-ghost{width:100%;height:40px;border:1px solid #dcdcdc;border-radius:2px;background:#fff;font-size:14px;color:var(--sp-ink)}
+
+/* sheet */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:20;display:none;align-items:flex-end}
+.scrim.on{display:flex}
+.sheet{width:100%;background:#fff;border-radius:12px 12px 0 0;padding:8px 16px 20px;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.3}to{transform:none;opacity:1}}
+.grab{width:36px;height:4px;border-radius:2px;background:#ddd;margin:0 auto 14px}
+.sheet h3{font-size:17px;font-weight:500;margin-bottom:4px}
+.sheet .lead{font-size:13px;color:var(--sp-muted);margin-bottom:16px}
+.wstep{display:flex;gap:12px;margin-bottom:14px}
+.wstep .b{flex:none;width:28px;height:28px;border-radius:50%;background:var(--sp-soft);color:var(--sp);display:grid;place-items:center;font-weight:700;font-size:13px}
+.wstep .tt{font-size:14px;font-weight:500}
+.wstep .dd{font-size:12px;color:var(--sp-muted)}
+.w-hl{background:#fffbe6;border:1px solid #ffe58f;border-radius:2px;padding:8px 10px;font-size:12px;color:#8a6d00;margin:4px 0 16px}
+
+/* payment */
+.pay-top{background:var(--sp);color:#fff;text-align:center;padding:14px 12px 22px}
+.pay-top .lbl{font-size:13px;opacity:.9}
+.pay-top .amt{font-size:26px;font-weight:500;margin:2px 0}
+.pay-top .brl{font-size:13px;opacity:.9}
+.timer{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border-radius:12px;padding:3px 10px;font-size:13px;margin-top:8px}
+.pay-card{background:#fff;margin:-10px 12px 0;border-radius:4px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);position:relative}
+.qr-wrap{display:flex;justify-content:center;position:relative}
+.qr{width:180px;height:180px;border:1px solid var(--sp-line);padding:6px;background:#fff}
+.qr-over{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.94);font-size:13px;color:var(--sp-ink)}
+.qr-over.on{display:flex}
+.spin{width:34px;height:34px;border-radius:50%;border:3px solid var(--sp-soft);border-top-color:var(--sp);animation:rot .9s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--sp-line);font-size:13px}
+.kv:first-of-type{margin-top:14px}
+.kv .k{color:var(--sp-muted);flex:none}
+.kv .vv{text-align:right;word-break:break-all;display:flex;align-items:center;gap:6px}
+.copy{color:var(--sp);font-size:12px;border:1px solid var(--sp);border-radius:2px;padding:2px 8px;flex:none}
+.warn{background:#fff8e6;border:1px solid #ffd591;border-radius:2px;padding:10px;font-size:12px;color:#a15c00;margin-top:12px}
+.warn b{font-weight:700}
+.pay-status{display:flex;align-items:center;gap:8px;justify-content:center;font-size:13px;color:var(--sp-muted);margin:14px 0 4px}
+.dot{width:8px;height:8px;border-radius:50%;background:#f5a623;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.pay-actions{padding:12px;display:flex;flex-direction:column;gap:8px}
+.progress{height:3px;background:var(--sp-line);margin-top:12px;border-radius:2px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--sp);transition:width 1s linear}
+
+.cc{margin-top:14px;text-align:center}
+.cc-lbl{font-size:13px;color:var(--sp-muted);margin-bottom:8px}
+.cc-code{font:12px/1.45 ui-monospace,Consolas,monospace;color:var(--sp-ink);background:#f7f7f7;border:1px dashed #cfcfcf;border-radius:4px;padding:10px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-btn{margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:4px}
+/* result */
+.res{background:#fff;padding:28px 16px 20px;text-align:center}
+.res .big{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;margin:0 auto 12px}
+.res .big.ok{background:#e8f7f4;color:var(--sp-green)}
+.res .big.exp{background:#fff1ec;color:var(--sp)}
+.res h3{font-size:18px;font-weight:500}
+.res p{font-size:13px;color:var(--sp-muted);margin-top:4px}
+.track{background:#fff;margin-top:10px;padding:12px}
+.track h4{font-size:14px;font-weight:500;margin-bottom:10px}
+.tl{display:flex;flex-direction:column;gap:0}
+.tl > div{display:flex;gap:10px;font-size:13px;padding-bottom:12px;position:relative}
+.tl > div::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:#ccc;margin-top:4px}
+.tl > div.ok::before{background:var(--sp-green)}
+.tl > div.cur::before{background:#f5a623}
+.tl > div:not(:last-child)::after{content:"";position:absolute;left:4px;top:16px;bottom:0;width:2px;background:#eee}
+.tl .s{color:var(--sp-muted);font-size:12px}
+
+.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.75);color:#fff;padding:10px 16px;border-radius:4px;font-size:13px;z-index:40;display:none}
+.toast.on{display:block}
+
+@media (max-width:1100px){
+  .wrap{grid-template-columns:1fr 390px}
+  .side.api{grid-column:1/-1}
+}
+@media (max-width:720px){
+  .wrap{grid-template-columns:1fr;padding:16px}
+  .phone{width:100%;max-width:390px;height:760px;margin:0 auto;position:static;padding:0;border-radius:0;background:none;box-shadow:none}
+  .screen{border-radius:16px;border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <span class="tag">Transfero concept prototype</span>
+      <h1>Crypto payments inside the Shopee checkout</h1>
+      <p>How Transfero Checkout, consumed via API, would appear as one more native payment method in the app, with no redirect and no new tab. Amounts, address and QR code are fictitious.</p>
+    </div>
+  </header>
+
+  <!-- left: jornada -->
+  <aside class="side">
+    <div class="card">
+      <h2>Journey</h2>
+      <ol class="steps" id="steps"></ol>
+      <div class="ctrls">
+        <button class="btn-demo" id="dSimPay">Simulate payment received</button>
+        <button class="btn-demo" id="dSimExp">Simulate QR expiration</button>
+        <button class="btn-demo" id="dReset">Restart (show welcome again)</button>
+      </div>
+    </div>
+    <div class="card note">
+      Journey reference: standalone Checkout Web (Figma "Handoff Desktop Checkout Web"). The same steps (currency, terms, time-boxed QR, verification, success, expired) are redistributed across Shopee native screens.
+    </div>
+  </aside>
+
+  <!-- center: phone -->
+  <div class="phone">
+    <div class="screen" id="screen">
+      <div class="poc-flag">PROTOTYPE</div>
+      <div class="status" id="status"><span>9:41</span><span>5G ▮▮▮</span></div>
+
+      <!-- 1. carrinho -->
+      <section class="view" data-v="cart">
+        <div class="hdr">
+          <button class="back" aria-label="Back"><svg class="ico" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="t">Shopping cart (3)</div>
+          <div class="r">Edit</div>
+        </div>
+        <div class="scroll">
+          <div class="shop">
+            <div class="shop-h"><span class="chk on"></span><span class="mall">Mall</span>SomBox Official Store <span class="chev">›</span><span class="edit">Edit</span></div>
+            <div class="item">
+              <span class="chk on" style="margin-top:31px"></span>
+              <div class="thumb"><svg width="44" height="44" viewBox="0 0 44 44"><path d="M10 24a12 12 0 0124 0" fill="none" stroke="#444" stroke-width="3"/><rect x="7" y="23" width="7" height="12" rx="3" fill="#333"/><rect x="30" y="23" width="7" height="12" rx="3" fill="#333"/></svg></div>
+              <div class="info">
+                <div class="name">Wireless Bluetooth 5.3 Headphones with Noise Cancelling</div>
+                <span class="var">Variation: Black ▾</span>
+                <div class="prow"><div><span class="old">R$129.90</span><span class="price"><small>R$</small>89.90</span></div><div class="qty"><span>−</span><span>1</span><span>+</span></div></div>
+              </div>
+            </div>
+            <div class="item">
+              <span class="chk on" style="margin-top:31px"></span>
+              <div class="thumb"><svg width="44" height="44" viewBox="0 0 44 44"><rect x="13" y="5" width="18" height="34" rx="4" fill="#f4b5c4"/><circle cx="18" cy="10" r="2" fill="#555"/></svg></div>
+              <div class="info">
+                <div class="name">Soft-Touch Silicone Case for iPhone 15</div>
+                <span class="var">Variation: Pink ▾</span>
+                <div class="prow"><div><span class="price"><small>R$</small>19.90</span></div><div class="qty"><span>−</span><span>2</span><span>+</span></div></div>
+              </div>
+            </div>
+            <div class="shop-foot"><span class="vc"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M3 7h18v4a2 2 0 000 4v4H3v-4a2 2 0 000-4z"/></svg>R$10 voucher applied</span><span class="more">More vouchers</span></div>
+            <div class="ship-note"><svg class="ico g" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>Free shipping on orders over R$19 with voucher</div>
+          </div>
+          <div class="shop">
+            <div class="shop-h"><span class="chk on"></span><span class="pref">Preferred</span>Home &amp; Style <span class="chev">›</span><span class="edit">Edit</span></div>
+            <div class="item">
+              <span class="chk on" style="margin-top:31px"></span>
+              <div class="thumb"><svg width="44" height="44" viewBox="0 0 44 44"><rect x="15" y="9" width="14" height="30" rx="5" fill="#6a8caf"/><rect x="16" y="4" width="12" height="6" rx="2" fill="#333"/></svg></div>
+              <div class="info">
+                <div class="name">Double-Wall Stainless Steel Bottle 1L</div>
+                <span class="var">Variation: Blue ▾</span>
+                <div class="prow"><div><span class="price"><small>R$</small>59.90</span></div><div class="qty"><span>−</span><span>1</span><span>+</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="voucher-bar"><svg class="ico" viewBox="0 0 24 24" style="color:var(--sp)"><path d="M3 7h18v4a2 2 0 000 4v4H3v-4a2 2 0 000-4z"/></svg>Shopee Voucher<span class="v">−R$10 ›</span></div>
+          <div style="height:12px"></div>
+        </div>
+        <div class="cart-bar">
+          <span class="all"><span class="chk on"></span>All</span>
+          <div class="tot">Total <b>R$179.60</b><div class="sv">Saved R$50.00</div></div>
+          <button class="cta" data-go="checkout">Check out (4)</button>
+        </div>
+      </section>
+
+      <!-- 2. finalizar pedido -->
+      <section class="view" data-v="checkout">
+        <div class="hdr">
+          <button class="back" data-go="cart" aria-label="Back"><svg class="ico" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="t">Checkout</div>
+        </div>
+        <div class="scroll">
+          <div class="addr">
+            <svg class="ico pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 0114 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div>
+              <div class="who">Marina Costa <span>| (21) 9****-4410</span></div>
+              <div class="line">190 Voluntários da Pátria St, Apt 802, Botafogo, Rio de Janeiro - RJ, 22270-010</div>
+            </div>
+            <span class="go">›</span>
+          </div>
+
+          <div class="sec">
+            <div class="shop-h"><span class="mall">Mall</span>SomBox Official Store</div>
+            <div class="mini"><div class="thumb"><svg width="34" height="34" viewBox="0 0 44 44"><path d="M10 24a12 12 0 0124 0" fill="none" stroke="#444" stroke-width="3"/><rect x="7" y="23" width="7" height="12" rx="3" fill="#333"/><rect x="30" y="23" width="7" height="12" rx="3" fill="#333"/></svg></div><div style="flex:1"><div class="n">Wireless Bluetooth 5.3 Headphones</div><div class="vv">Black</div><div class="pp"><span>R$89.90</span><span>x1</span></div></div></div>
+            <div class="mini"><div class="thumb"><svg width="34" height="34" viewBox="0 0 44 44"><rect x="13" y="5" width="18" height="34" rx="4" fill="#f4b5c4"/></svg></div><div style="flex:1"><div class="n">Soft-Touch Silicone Case iPhone 15</div><div class="vv">Pink</div><div class="pp"><span>R$19.90</span><span>x2</span></div></div></div>
+            <div class="row"><div class="l">Shipping option</div></div>
+            <div class="ship-box"><div class="t"><span>Standard</span><span>R$0.00</span></div><div class="s">Free shipping applied</div><div class="d">Arrives Sep 26 - Sep 30</div></div>
+          </div>
+
+          <div class="sec">
+            <div class="shop-h"><span class="pref">Preferred</span>Home &amp; Style</div>
+            <div class="mini"><div class="thumb"><svg width="34" height="34" viewBox="0 0 44 44"><rect x="15" y="9" width="14" height="30" rx="5" fill="#6a8caf"/></svg></div><div style="flex:1"><div class="n">Double-Wall Stainless Steel Bottle 1L</div><div class="vv">Blue</div><div class="pp"><span>R$59.90</span><span>x1</span></div></div></div>
+            <div class="row"><div class="l">Shipping option</div></div>
+            <div class="ship-box"><div class="t"><span>Standard</span><span>R$12.90</span></div><div class="d">Arrives Sep 27 - Oct 1</div></div>
+          </div>
+
+          <div class="sec">
+            <div class="row"><svg class="ico" viewBox="0 0 24 24" style="color:var(--sp)"><path d="M3 7h18v4a2 2 0 000 4v4H3v-4a2 2 0 000-4z"/></svg><div class="l">Shopee Voucher</div><div class="v">−R$10</div><span class="go">›</span></div>
+            <div class="row"><svg class="ico" viewBox="0 0 24 24" style="color:#f5a623"><circle cx="12" cy="12" r="8"/><path d="M12 8v8"/></svg><div class="l">Shopee Coins <span style="color:var(--sp-muted);font-size:12px">(no coins)</span></div></div>
+          </div>
+
+          <div class="sec">
+            <button class="row pay-row" style="width:100%;text-align:left" data-go="methods">
+              <div class="l"><svg class="ico" viewBox="0 0 24 24" style="color:var(--sp)"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Payment method</div>
+              <div class="pay-sel" id="paySel">See all</div><span class="go">›</span>
+            </button>
+          </div>
+
+          <div class="sec">
+            <div class="sum">
+              <h4>Payment details</h4>
+              <div class="r"><span>Merchandise subtotal</span><span>R$189.60</span></div>
+              <div class="r"><span>Shipping subtotal</span><span>R$12.90</span></div>
+              <div class="r"><span>Voucher discount</span><span>−R$10.00</span></div>
+              <div class="r total"><span>Total payment</span><b>R$192.50</b></div>
+              <div class="r cr" id="sumCrypto" style="display:none"></div>
+            </div>
+          </div>
+          <div class="terms" id="terms" style="display:none"><span class="chk on" id="termsChk" style="margin-top:1px"></span><span>I have read and agree to Transfero's <a href="#" onclick="return false">terms of use</a> and <a href="#" onclick="return false">privacy policy</a>. Transfero processes the crypto payment. Blockchain transactions are final; refunds follow Shopee's policy.</span></div>
+          <div class="terms" id="termsShopee">By tapping "Place order", you agree to the store Terms of Service.</div>
+        </div>
+        <div class="co-bar">
+          <div class="tot">Total payment<br><b>R$192.50</b><div class="sv">Saved R$60.00</div></div>
+          <button class="cta" id="placeOrder">Place order</button>
+        </div>
+      </section>
+
+      <!-- 3. método de pagamento -->
+      <section class="view" data-v="methods">
+        <div class="hdr">
+          <button class="back" data-go="checkout" aria-label="Back"><svg class="ico" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="t">Payment method</div>
+        </div>
+        <div class="scroll">
+          <div class="m-list" id="mList">
+            <button class="m" data-m="pix"><span class="mi"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2l4 4-4 4-4-4zM12 14l4 4-4 4-4-4zM2 12l4-4 4 4-4 4zM14 12l4-4 4 4-4 4z" fill="#32bcad"/></svg></span><span class="ml">Pix<div class="s">Instant approval</div></span><span class="radio"></span></button>
+            <button class="m" data-m="card"><span class="mi"><svg class="ico" viewBox="0 0 24 24" style="color:#555"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span><span class="ml">Credit card<div class="s">Up to 12 installments</div></span><span class="radio"></span></button>
+            <button class="m" data-m="boleto"><span class="mi"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 6v12M7 6v12M9 6v12M12 6v12M15 6v12M17 6v12M20 6v12" stroke="#555" stroke-width="1.5"/></svg></span><span class="ml">Boleto<div class="s">Approval within 3 business days</div></span><span class="radio"></span></button>
+            <button class="m" data-m="crypto"><span class="mi"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OC43NyIgaGVpZ2h0PSI0OC43NyIgdmlld0JveD0iMCAwIDQ4Ljc3IDQ4Ljc3Ij4NCiAgPGcgaWQ9IkdydXBvXzUxNiIgZGF0YS1uYW1lPSJHcnVwbyA1MTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00NjIuODA4IC03NjUuMTA2KSI+DQogICAgPHBhdGggaWQ9IkNhbWluaG9fNjYiIGRhdGEtbmFtZT0iQ2FtaW5obyA2NiIgZD0iTTI0LjcsMTkuMjMzYzAtMS41LTQuMDcxLTIuNzQ1LTkuNDgxLTMuMDMzVjEzLjgxNmg2Ljc1NVY4Ljg1NUgzLjV2NC45NjFoNi43NTV2Mi40QzQuOTQzLDE2LjUyLjk3LDE3Ljc1NS45NywxOS4yMzNzMy45NzMsMi43MTMsOS4yODUsMy4wMjF2OC41NjFoNC45NjJWMjIuMjY1QzIwLjYyNywyMS45NzgsMjQuNywyMC43MjksMjQuNywxOS4yMzNaTTEyLjgzNCwyMC43MDdjLTUuODA3LDAtMTAuNTE1LS45LTEwLjUxNS0yLjAwOCwwLS45MzksMy4zNzYtMS43MjgsNy45MzYtMS45NDd2LjU2NWgwdjIuMzE3Yy44MjIuMDQ2LDEuNjg2LjA3LDIuNTc5LjA3LjgyMiwwLDEuNjItLjAyMSwyLjM4My0uMDU5di0yLjljNC42NTkuMjA2LDguMTMyLDEsOC4xMzIsMS45NTZDMjMuMzQ5LDE5LjgwOCwxOC42NDEsMjAuNzA3LDEyLjgzNCwyMC43MDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NzkuOTE3IDc3Mi43MjkpIiBmaWxsPSIjZmZmIi8+DQogICAgPHBhdGggaWQ9IkNhbWluaG9fNzYzIiBkYXRhLW5hbWU9IkNhbWluaG8gNzYzIiBkPSJNMjQuMzg1LDBBMjQuMzg1LDI0LjM4NSwwLDEsMSwwLDI0LjM4NSwyNC4zODUsMjQuMzg1LDAsMCwxLDI0LjM4NSwwWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDYyLjgwOCA3NjUuMTA2KSIgZmlsbD0iIzAwYTM3NyIvPg0KICAgIDxwYXRoIGlkPSJDYW1pbmhvXzc2NCIgZGF0YS1uYW1lPSJDYW1pbmhvIDc2NCIgZD0iTTI0LjcsMTkuMjMzYzAtMS41LTQuMDcxLTIuNzQ1LTkuNDgxLTMuMDMzVjEzLjgxNmg2Ljc1NVY4Ljg1NUgzLjV2NC45NjFoNi43NTV2Mi40QzQuOTQzLDE2LjUyLjk3LDE3Ljc1NS45NywxOS4yMzNzMy45NzMsMi43MTMsOS4yODUsMy4wMjF2OC41NjFoNC45NjJWMjIuMjY1QzIwLjYyNywyMS45NzgsMjQuNywyMC43MjksMjQuNywxOS4yMzNaTTEyLjgzNCwyMC43MDdjLTUuODA3LDAtMTAuNTE1LS45LTEwLjUxNS0yLjAwOCwwLS45MzksMy4zNzYtMS43MjgsNy45MzYtMS45NDd2LjU2NWgwdjIuMzE3Yy44MjIuMDQ2LDEuNjg2LjA3LDIuNTc5LjA3LjgyMiwwLDEuNjItLjAyMSwyLjM4My0uMDU5di0yLjljNC42NTkuMjA2LDguMTMyLDEsOC4xMzIsMS45NTZDMjMuMzQ5LDE5LjgwOCwxOC42NDEsMjAuNzA3LDEyLjgzNCwyMC43MDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NzQuNjkyIDc3MC45ODcpIiBmaWxsPSIjZmZmIi8+DQogIDwvZz4NCjwvc3ZnPg0K" width="26" height="26" alt="USDT"></span><span class="ml">Crypto<span class="new">NEW</span><div class="s">USDT, USDC or BRZ, from any wallet</div></span><span class="radio"></span></button>
+          </div>
+          <div class="cr-panel" id="crPanel">
+            <div class="cr-lbl">Currency</div>
+            <div class="coins" id="coins"></div>
+            <div class="cr-info"><span>Network</span><b>Polygon</b></div>
+            <div class="cr-info"><span>You pay approx.</span><b id="estAmt"></b></div>
+            <div class="cr-info" style="border-bottom:1px dashed var(--sp-line)"><span>Rate</span><b id="estRate"></b></div>
+            <div class="powered">Final amount is locked when you place the order and is valid for 5 minutes. Processed by Transfero.</div>
+          </div>
+        </div>
+        <div class="m-foot"><button class="btn-or" id="confirmMethod">Confirm</button></div>
+      </section>
+
+      <!-- 4. pagamento -->
+      <section class="view" data-v="payment">
+        <div class="hdr or" style="border:0">
+          <button class="back" data-go="checkout" aria-label="Back"><svg class="ico" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="t">Payment</div>
+        </div>
+        <div class="scroll">
+          <div class="pay-top">
+            <div class="lbl">Send exactly</div>
+            <div class="amt" id="payAmt"></div>
+            <div class="brl">R$192.50 · Order 260923K8P4QX</div>
+            <div class="timer"><svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg>Pay within <b id="timer">05:00</b></div>
+          </div>
+          <div class="pay-card">
+            <div class="qr-wrap">
+              <svg class="qr" id="qr" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg>
+              <div class="qr-over" id="qrOver"><div class="spin"></div>Verifying payment...</div>
+            </div>
+            <div class="progress"><i id="prog" style="width:100%"></i></div>
+            <div class="cc">
+              <div class="cc-lbl">Or use the copy-and-paste code</div>
+              <div class="cc-code" id="ccCode"></div>
+              <button class="btn-or cc-btn" id="ccCopy"><svg class="ico" viewBox="0 0 24 24" style="width:18px;height:18px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copy code</button>
+            </div>
+            <div class="kv"><span class="k">Currency</span><span class="vv" id="payCoin"></span></div>
+            <div class="kv"><span class="k">Network</span><span class="vv">Polygon</span></div>
+            <div class="kv"><span class="k">Address</span><span class="vv"><span style="font-family:ui-monospace,Consolas,monospace;font-size:12px">0xDEMO…PR0T0</span><button class="copy" data-toast="Address copied">Copy</button></span></div>
+            <div class="kv"><span class="k">Amount</span><span class="vv"><span id="payAmt2"></span><button class="copy" data-toast="Amount copied">Copy</button></span></div>
+            <div class="warn"><b>Attention:</b> send only <span id="warnCoin"></span> on the <b>Polygon</b> network. Prefer a non-custodial wallet (one where you control the keys). Transfers on another network or for a different amount may be lost.</div>
+            <div class="pay-status" id="payStatus"><span class="dot"></span>Awaiting payment. Confirmation is automatic.</div>
+          </div>
+          <div class="pay-actions">
+            <button class="btn-ghost" data-go="checkout">Change payment method</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. sucesso -->
+      <section class="view" data-v="success">
+        <div class="hdr"><div class="t" style="text-align:center">Order placed</div></div>
+        <div class="scroll">
+          <div class="res">
+            <div class="big ok"><svg class="ico" viewBox="0 0 24 24" style="width:34px;height:34px"><path d="M5 12l5 5 9-10"/></svg></div>
+            <h3>Payment approved</h3>
+            <p id="okLine"></p>
+            <p>Order 260923K8P4QX · R$192.50</p>
+          </div>
+          <div class="track">
+            <h4>Order status</h4>
+            <div class="tl">
+              <div class="ok"><span>Payment received on the blockchain<div class="s">Now</div></span></div>
+              <div class="cur" id="tlSettle"><span>Confirming with Transfero<div class="s">Released to the seller shortly</div></span></div>
+              <div><span>Seller prepares shipment<div class="s">Within 2 business days</div></span></div>
+              <div><span>In transit</span></div>
+            </div>
+          </div>
+          <div class="pay-actions">
+            <button class="btn-or" data-go="cart">Back to home</button>
+            <button class="btn-ghost">View order</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. expirado -->
+      <section class="view" data-v="expired">
+        <div class="hdr"><button class="back" data-go="checkout" aria-label="Back"><svg class="ico" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><div class="t">Payment</div></div>
+        <div class="scroll">
+          <div class="res">
+            <div class="big exp"><svg class="ico" viewBox="0 0 24 24" style="width:32px;height:32px"><circle cx="12" cy="13" r="8"/><path d="M12 9v4M9 2h6"/></svg></div>
+            <h3>The payment window has ended</h3>
+            <p>Quotes are valid for 5 minutes. Your order is still saved: generate a new QR code with the updated amount.</p>
+          </div>
+          <div class="sec"><div class="sum">
+            <div class="r"><span>Already sent the crypto?</span><span></span></div>
+            <div style="font-size:12px;color:var(--sp-muted)">Payments that arrive after the deadline are identified and returned to the sending wallet. Track it in My orders.</div>
+          </div></div>
+          <div class="pay-actions">
+            <button class="btn-or" id="regen">Generate new QR code</button>
+            <button class="btn-ghost" data-go="methods">Choose another method</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- welcome sheet -->
+      <div class="scrim" id="welcome">
+        <div class="sheet">
+          <div class="grab"></div>
+          <h3>Pay with crypto</h3>
+          <p class="lead">Use your wallet balance to shop on Shopee. No extra sign-up.</p>
+          <div class="wstep"><span class="b">1</span><div><div class="tt">Choose the currency</div><div class="dd">USDT, USDC or BRZ. We show how much you will pay before you confirm.</div></div></div>
+          <div class="wstep"><span class="b">2</span><div><div class="tt">Place the order and send</div><div class="dd">Scan the QR code or copy the address into the wallet of your choice.</div></div></div>
+          <div class="wstep"><span class="b">3</span><div><div class="tt">Automatic confirmation</div><div class="dd">We detect the payment within minutes and your order moves on to the seller.</div></div></div>
+          <div class="w-hl">The crypto amount is locked for 5 minutes after you place the order.</div>
+          <button class="btn-or" id="wOk">Got it</button>
+          <div class="powered" style="justify-content:center;margin-top:10px">Payment processed by Transfero</div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+
+  <!-- right: API -->
+  <aside class="side api">
+    <div class="card">
+      <h2>Behind the screen: Transfero Checkout API</h2>
+      <div id="api"></div>
+    </div>
+    <div class="card note">
+      Base: <code>/api/v1/partner-api</code>, Bearer JWT authentication (exchange of <code>x-partner-id</code> and <code>x-partner-secret</code>). Shopee calls the API from its own backend and renders everything in its own front end: Transfero never shows up as a page, only as the payment processor.
+    </div>
+  </aside>
+</div>
+
+<script>
+const COINS={
+  USDT:{name:'Tether',rate:5.42,color:'#26a17b',glyph:'₮',dec:2},
+  USDC:{name:'USD Coin',rate:5.41,color:'#2775ca',glyph:'$',dec:2},
+  BRZ:{name:'Brazilian Digital',rate:1,color:'#1b1446',glyph:'R$',dec:2}
+};
+const ICONS={"USDT": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OC43NyIgaGVpZ2h0PSI0OC43NyIgdmlld0JveD0iMCAwIDQ4Ljc3IDQ4Ljc3Ij4NCiAgPGcgaWQ9IkdydXBvXzUxNiIgZGF0YS1uYW1lPSJHcnVwbyA1MTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00NjIuODA4IC03NjUuMTA2KSI+DQogICAgPHBhdGggaWQ9IkNhbWluaG9fNjYiIGRhdGEtbmFtZT0iQ2FtaW5obyA2NiIgZD0iTTI0LjcsMTkuMjMzYzAtMS41LTQuMDcxLTIuNzQ1LTkuNDgxLTMuMDMzVjEzLjgxNmg2Ljc1NVY4Ljg1NUgzLjV2NC45NjFoNi43NTV2Mi40QzQuOTQzLDE2LjUyLjk3LDE3Ljc1NS45NywxOS4yMzNzMy45NzMsMi43MTMsOS4yODUsMy4wMjF2OC41NjFoNC45NjJWMjIuMjY1QzIwLjYyNywyMS45NzgsMjQuNywyMC43MjksMjQuNywxOS4yMzNaTTEyLjgzNCwyMC43MDdjLTUuODA3LDAtMTAuNTE1LS45LTEwLjUxNS0yLjAwOCwwLS45MzksMy4zNzYtMS43MjgsNy45MzYtMS45NDd2LjU2NWgwdjIuMzE3Yy44MjIuMDQ2LDEuNjg2LjA3LDIuNTc5LjA3LjgyMiwwLDEuNjItLjAyMSwyLjM4My0uMDU5di0yLjljNC42NTkuMjA2LDguMTMyLDEsOC4xMzIsMS45NTZDMjMuMzQ5LDE5LjgwOCwxOC42NDEsMjAuNzA3LDEyLjgzNCwyMC43MDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NzkuOTE3IDc3Mi43MjkpIiBmaWxsPSIjZmZmIi8+DQogICAgPHBhdGggaWQ9IkNhbWluaG9fNzYzIiBkYXRhLW5hbWU9IkNhbWluaG8gNzYzIiBkPSJNMjQuMzg1LDBBMjQuMzg1LDI0LjM4NSwwLDEsMSwwLDI0LjM4NSwyNC4zODUsMjQuMzg1LDAsMCwxLDI0LjM4NSwwWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDYyLjgwOCA3NjUuMTA2KSIgZmlsbD0iIzAwYTM3NyIvPg0KICAgIDxwYXRoIGlkPSJDYW1pbmhvXzc2NCIgZGF0YS1uYW1lPSJDYW1pbmhvIDc2NCIgZD0iTTI0LjcsMTkuMjMzYzAtMS41LTQuMDcxLTIuNzQ1LTkuNDgxLTMuMDMzVjEzLjgxNmg2Ljc1NVY4Ljg1NUgzLjV2NC45NjFoNi43NTV2Mi40QzQuOTQzLDE2LjUyLjk3LDE3Ljc1NS45NywxOS4yMzNzMy45NzMsMi43MTMsOS4yODUsMy4wMjF2OC41NjFoNC45NjJWMjIuMjY1QzIwLjYyNywyMS45NzgsMjQuNywyMC43MjksMjQuNywxOS4yMzNaTTEyLjgzNCwyMC43MDdjLTUuODA3LDAtMTAuNTE1LS45LTEwLjUxNS0yLjAwOCwwLS45MzksMy4zNzYtMS43MjgsNy45MzYtMS45NDd2LjU2NWgwdjIuMzE3Yy44MjIuMDQ2LDEuNjg2LjA3LDIuNTc5LjA3LjgyMiwwLDEuNjItLjAyMSwyLjM4My0uMDU5di0yLjljNC42NTkuMjA2LDguMTMyLDEsOC4xMzIsMS45NTZDMjMuMzQ5LDE5LjgwOCwxOC42NDEsMjAuNzA3LDEyLjgzNCwyMC43MDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NzQuNjkyIDc3MC45ODcpIiBmaWxsPSIjZmZmIi8+DQogIDwvZz4NCjwvc3ZnPg0K", "USDC": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OC43NyIgaGVpZ2h0PSI0OC43NyIgdmlld0JveD0iMCAwIDQ4Ljc3IDQ4Ljc3Ij4NCiAgPGcgaWQ9IkdydXBvXzUxNSIgZGF0YS1uYW1lPSJHcnVwbyA1MTUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00NjIuODA4IC05MDkuNjc0KSI+DQogICAgPHBhdGggaWQ9IkNhbWluaG9fNzY3IiBkYXRhLW5hbWU9IkNhbWluaG8gNzY3IiBkPSJNMjQuMzg1LDBBMjQuMzg1LDI0LjM4NSwwLDEsMSwwLDI0LjM4NSwyNC4zODUsMjQuMzg1LDAsMCwxLDI0LjM4NSwwWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDYyLjgwOCA5MDkuNjc0KSIgZmlsbD0iIzI3NzVjYSIvPg0KICAgIDxwYXRoIGlkPSJDYW1pbmhvXzc2OCIgZGF0YS1uYW1lPSJDYW1pbmhvIDc2OCIgZD0iTTE2LjA4NiwxNzQ4LjY2NmExNi4wODYsMTYuMDg2LDAsMSwwLDE2LjA4NiwxNi4wODZBMTYuMDQ3LDE2LjA0NywwLDAsMCwxNi4wODYsMTc0OC42NjZabS0zLjAxNiwyNy4yMTFjMCwuMTM0LDAsLjItLjA2Ny4yNjlhLjQwOC40MDgsMCwwLDEtLjYuMjY4LDEyLjA2MSwxMi4wNjEsMCwwLDEsMC0yMi45ODkuNC40LDAsMCwxLC4yNjgtLjA2Ny41MDkuNTA5LDAsMCwxLC40LjUzNnYuOTM4YS42NzMuNjczLDAsMCwxLS40LjY3LDEwLjAyOSwxMC4wMjksMCwwLDAsMCwxOC44MzMuODkyLjg5MiwwLDAsMSwuNC42Wm00LjA4OC0zLjQxOGMtLjA2Ny4zMzUtLjI2OC41MzYtLjUzNi41MzZIMTUuNjE2Yy0uMzM1LS4wNjctLjUzNi0uMjY4LS41MzYtLjUzNnYtMS42MDhjLTIuMjEyLS4zMzYtMy4yODQtMS41NDItMy41NTItMy4yMTd2LS4wNjhBLjQ1OC40NTgsMCwwLDEsMTIsMTc2Ny4xaDEuMTM5YS40ODkuNDg5LDAsMCwxLC40NjkuNGMuMiwxLjAwNS44LDEuNzQzLDIuNTQ3LDEuNzQzLDEuMjczLDAsMi4yMTItLjczNywyLjIxMi0xLjgxcy0uNi0xLjQ3NS0yLjQ4LTEuODA5Yy0yLjgxNS0uMzM1LTQuMTU1LTEuMjA3LTQuMTU1LTMuNDE4YTMuNDE4LDMuNDE4LDAsMCwxLDMuMjg0LTMuMjg1di0xLjU0MWMuMDY3LS4zMzUuMjY4LS41MzYuNTM2LS41MzZoMS4wMDVjLjMzNS4wNjcuNTM2LjI2OS41MzYuNTM2djEuNjA4YTMuMzUsMy4zNSwwLDAsMSwzLjAxNiwyLjc0OHYuMDY3YS40NTguNDU4LDAsMCwxLS40NjkuNDY5SDE4LjU2NWEuNS41LDAsMCwxLS40NjktLjMzNSwxLjk4MywxLjk4MywwLDAsMC0yLjIxMi0xLjQwOGMtMS4zNCwwLTIuMDExLjYtMi4wMTEsMS41NDFzLjQsMS40NzUsMi40MTMsMS43NDNjMi44MTUuMzM1LDQuMjIyLDEuMTQsNC4yMjIsMy40ODVoMGEzLjY3MiwzLjY3MiwwLDAsMS0zLjM1MSwzLjU1M1ptMi42MTQsNC4wMjFhLjQuNCwwLDAsMS0uMjY4LjA2Ny41MDkuNTA5LDAsMCwxLS40LS41MzZ2LS45MzhhLjY3Mi42NzIsMCwwLDEsLjQtLjY3LDEwLjAyOSwxMC4wMjksMCwwLDAsMC0xOC44MzMuODkxLjg5MSwwLDAsMS0uNC0uNjcxdi0uOTM4YzAtLjEzNCwwLS4yLjA2Ny0uMjY4YS40MDcuNDA3LDAsMCwxLC42LS4yNjhoMGExMi4xMTIsMTIuMTEyLDAsMCwxLDAsMjMuMDU2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDcxLjUxNyAtODMwLjkyMikiIGZpbGw9IiNmZmYiLz4NCiAgPC9nPg0KPC9zdmc+DQo=", "BRZ": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNzA4LjY2IDcwOC42NiI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiMxNzA2MzY7fS5jbHMtMntmaWxsOiMxNGIyM2Q7fS5jbHMtM3tmaWxsOiNmZmMxMDA7fS5jbHMtNHtmaWxsOnVybCgjTmV3X0dyYWRpZW50X1N3YXRjaF8xKTt9PC9zdHlsZT48bGluZWFyR3JhZGllbnQgaWQ9Ik5ld19HcmFkaWVudF9Td2F0Y2hfMSIgeDE9IjIxNy4yIiB5MT0iMTY5LjAzIiB4Mj0iNDkxLjUxIiB5Mj0iNDQzLjM1IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZkYzAwIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMDdlNThhIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PGcgaWQ9IkxheWVyXzIiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PGcgaWQ9IlN5bWJvbF8wMSI+PGNpcmNsZSBjbGFzcz0iY2xzLTEiIGN4PSIzNTQuMzMiIGN5PSIzNTQuMzMiIHI9IjM1NC4zMyIvPjxyZWN0IGNsYXNzPSJjbHMtMiIgeD0iNDcyLjQiIHk9IjI0MS44NiIgd2lkdGg9IjEyOS4xNyIgaGVpZ2h0PSIxMjkuMTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKC01OS40MSA0NjkuNDYpIHJvdGF0ZSgtNDUpIi8+PHJlY3QgY2xhc3M9ImNscy0zIiB4PSIxMDcuMDkiIHk9IjI0MS4zMSIgd2lkdGg9IjEyOS4xNyIgaGVpZ2h0PSIxMjkuMTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNjYuMDEgMjEwLjk5KSByb3RhdGUoLTQ1KSIvPjxyZWN0IGNsYXNzPSJjbHMtMiIgeD0iMjkwLjI4IiB5PSI0MjQuNSIgd2lkdGg9IjEyOS4xNyIgaGVpZ2h0PSIxMjkuMTciIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNDEuODkgMzk0LjE4KSByb3RhdGUoLTQ1KSIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtNCIgcG9pbnRzPSIxNzEuNjcgMjE0LjU2IDM1NC45MyAzOTcuODIgNTM3LjA0IDM5Ny44MiAzNTMuNzggMjE0LjU2IDE3MS42NyAyMTQuNTYiLz48L2c+PC9nPjwvc3ZnPg=="};
+const TOTAL=192.50;
+const S={view:'cart',method:null,draftMethod:null,coin:'USDT',welcomeSeen:false,deadline:0,paid:false};
+let tick=null;
+
+const STEPS=[
+  ['cart','Cart ready for checkout'],
+  ['checkout','Checkout'],
+  ['methods','Payment method: Crypto'],
+  ['welcome','Welcome (first use)'],
+  ['payment','Payment: QR and timer'],
+  ['verifying','Verifying payment'],
+  ['success','Payment approved'],
+  ['expired','Expired']
+];
+
+const fmt=(n,d=2)=>n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const amt=c=>TOTAL/COINS[c].rate;
+const $=s=>document.querySelector(s);
+
+function coinIcon(c,size=26){
+  return `<img src="${ICONS[c]}" width="${size}" height="${size}" alt="${c}" style="display:block">`;
+}
+
+/* ---------- API panel content ---------- */
+const API={
+  cart:[{h:'No calls to Transfero',p:'Cart is 100% Shopee. Transfero only comes in when the buyer picks crypto as the payment method.'}],
+  checkout:()=>S.method==='crypto'
+    ?[{h:'State held by Shopee',p:'Selected method and estimate are already in the session. No new calls until "Place order".'}]
+    :[{h:'No calls to Transfero',p:'Native Shopee screen. Payment method opens the list where crypto sits next to Pix, card and boleto.'}],
+  methods:()=>[
+    {v:'GET',e:'/payment-methods',h:'Enabled currencies and networks',p:'Builds the currency chips. The list comes from the partner configuration, so new currencies show up without a Shopee deploy.',j:`{
+  "methods": [
+    { "label": "Tether", "currency": "USDT",
+      "blockchains": [{ "name": "polygon" }] },
+    { "label": "USD Coin", "currency": "USDC", ... },
+    { "label": "Brazilian Digital", "currency": "BRZ", ... }
+  ]
+}`},
+    {v:'POST',e:'/orders',h:'Creates the order when crypto is picked',p:'Idempotent on externalId (Shopee checkout id): switching currency or going back never duplicates the order.',j:`{ "externalId": "SHP-260923K8P4QX", "amount": 192.50 }
+→ { "orderId": "7f3c…" }`},
+    {v:'POST',e:'/orders/{orderId}/preview',h:'Estimate shown',p:'Approximate, non-binding amount, used in "You pay approx.".',j:`{ "currency": "${S.coin}", "blockchain": "polygon" }
+→ { "estimatedCryptoAmount": ${amt(S.coin).toFixed(2)} }`}
+  ],
+  welcome:[{h:'Static Shopee content',p:'Shown only on first crypto use. No API dependency; the copy reflects Checkout rules (5-minute window, automatic confirmation).'}],
+  payment:()=>[
+    {v:'POST',e:'/orders/{orderId}/payment',h:'Creates the QR and locks the amount',p:'Triggered by "Place order". The cryptoAmount here is binding and expiresAt drives the timer.',j:`{ "currency": "${S.coin}", "blockchain": "polygon" }
+→ {
+  "cryptoAmount": ${amt(S.coin).toFixed(2)},
+  "depositAddress": "0x…",
+  "qrCodePayload": "polygon:0x…",
+  "qrCodeBase64": "iVBOR…",
+  "expiresAt": "2026-09-23T14:05:00Z"
+}`},
+    {v:'GET',e:'/orders/{orderId}',h:'Polling every 5 to 10 s',p:'While payment.status = Awaiting, the screen keeps waiting.',j:`{ "payment": { "status": "Awaiting" },
+  "settlement": { "status": "Pending" } }`}
+  ],
+  verifying:[{v:'GET',e:'/orders/{orderId}',h:'Payment detected',p:'payment.status = Paid: safe to close the payment screen.',j:`{ "payment": { "status": "Paid" },
+  "settlement": { "status": "Pending" } }`}],
+  success:[
+    {v:'WEBHOOK',e:'settlement',h:'Settlement in BRZ',p:'settlement.status = Settled: BRZ credited to the Shopee Ultra account. This is the trigger to release shipping to the seller.',j:`{ "payment": { "status": "Paid" },
+  "settlement": { "status": "Settled",
+    "payout": { "status": "Pending" } } }`},
+    {h:'Automatic Pix payout (optional)',p:'With payout configured, the balance goes out via Pix to the Shopee bank account (payout.status Completed). Otherwise Shopee withdraws on demand via POST /withdrawals.'}
+  ],
+  expired:[{v:'GET',e:'/orders/{orderId}',h:'Window expired',p:'payment.status = Expired. "Generate new QR code" calls POST /orders/{orderId}/payment again with an updated quote.',j:`{ "payment": { "status": "Expired" } }`}]
+};
+
+function renderApi(key){
+  let list=API[key]; if(typeof list==='function') list=list();
+  $('#api').innerHTML=list.map(s=>`<div class="api-step"><h3>${s.v?`<span class="verb">${s.v}</span>`:''}${s.e?`<code>${s.e}</code><br>`:''}${s.h}</h3><p>${s.p}</p>${s.j?`<pre>${s.j.replace(/</g,'&lt;')}</pre>`:''}</div>`).join('');
+}
+
+/* ---------- navigation ---------- */
+let stepKey='cart';
+function go(v,opts={}){
+  if(v!=='payment') stopTimer();
+  document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on',e.dataset.v===v));
+  S.view=v;
+  document.querySelectorAll('.view.on .scroll').forEach(x=>x.scrollTop=0);
+  $('#status').classList.toggle('or',v==='payment');
+  if(v==='methods') openMethods();
+  if(v==='checkout') renderCheckout();
+  stepKey=opts.step||v;
+  renderSteps(); renderApi(stepKey);
+}
+function renderSteps(){
+  $('#steps').innerHTML=STEPS.map(([k,l],i)=>`<li><button data-step="${k}" class="${k===stepKey?'on':''}"><span class="n">${i+1}</span>${l}</button></li>`).join('');
+}
+
+/* methods */
+function openMethods(){
+  S.draftMethod=S.method||'pix';
+  renderMethods();
+}
+function renderMethods(){
+  document.querySelectorAll('#mList .m').forEach(b=>b.querySelector('.radio').classList.toggle('on',b.dataset.m===S.draftMethod));
+  $('#crPanel').classList.toggle('on',S.draftMethod==='crypto');
+  $('#coins').innerHTML=Object.keys(COINS).map(c=>`<button class="coin ${c===S.coin?'on':''}" data-coin="${c}">${coinIcon(c,24)}<span>${c}</span><span class="cs">${fmt(amt(c))}</span></button>`).join('');
+  $('#estAmt').textContent=`≈ ${fmt(amt(S.coin))} ${S.coin}`;
+  $('#estRate').textContent=S.coin==='BRZ'?'1 BRZ = R$1.00':`1 ${S.coin} ≈ R$${fmt(COINS[S.coin].rate)}`;
+}
+function renderCheckout(){
+  const c=S.method==='crypto';
+  const labels={pix:'Pix',card:'Credit card',boleto:'Boleto'};
+  $('#paySel').innerHTML=!S.method?'See all':c?`${coinIcon(S.coin,18)} ${S.coin} · Polygon`:labels[S.method];
+  $('#sumCrypto').style.display=c?'flex':'none';
+  $('#sumCrypto').innerHTML=c?`<span>In crypto (estimate)</span><span>≈ ${fmt(amt(S.coin))} ${S.coin}</span>`:'';
+  $('#terms').style.display=c?'flex':'none';
+  $('#termsShopee').style.display=c?'none':'block';
+  $('#placeOrder').disabled=!S.method;
+}
+
+/* payment */
+function startPayment(){
+  S.paid=false;
+  const a=`${fmt(amt(S.coin))} ${S.coin}`;
+  $('#payAmt').textContent=a; $('#payAmt2').textContent=a;
+  $('#payCoin').innerHTML=`${coinIcon(S.coin,18)} ${S.coin}`;
+  $('#warnCoin').innerHTML=`<b>${S.coin}</b>`;
+  $('#qrOver').classList.remove('on');
+  $('#payStatus').innerHTML='<span class="dot"></span>Awaiting payment. Confirmation is automatic.';
+  const units={USDT:6,USDC:6,BRZ:4}[S.coin];
+  $('#ccCode').textContent=`ethereum:0xDEMO${S.coin}0000000000000000000000@137/transfer?address=0xDEMO000000000000000000000000000PR0T0&uint256=${Math.round(amt(S.coin)*10**units)}`;
+  drawQR(S.coin);
+  S.deadline=Date.now()+5*60*1000;
+  stopTimer(); updateTimer(); tick=setInterval(updateTimer,1000);
+  go('payment');
+}
+function updateTimer(){
+  const left=Math.max(0,S.deadline-Date.now());
+  const s=Math.ceil(left/1000);
+  $('#timer').textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  $('#prog').style.width=(left/3000)+'%';
+  if(left<=0){stopTimer();go('expired');}
+}
+function stopTimer(){clearInterval(tick);tick=null}
+function simulatePaid(){
+  if(S.view!=='payment'){ if(!S.method){S.method='crypto';} startPayment(); }
+  stopTimer();
+  $('#qrOver').classList.add('on');
+  $('#payStatus').innerHTML='<span class="dot" style="background:var(--sp-green)"></span>Transaction found on the Polygon network';
+  stepKey='verifying'; renderSteps(); renderApi('verifying');
+  setTimeout(()=>{
+    $('#okLine').textContent=`We received ${fmt(amt(S.coin))} ${S.coin}.`;
+    $('#tlSettle').className='cur';
+    go('success');
+    setTimeout(()=>{ $('#tlSettle').className='ok'; $('#tlSettle').innerHTML='<span>Payment confirmed<div class="s">Order released to the seller</div></span>'; },2200);
+  },2200);
+}
+
+/* QR placeholder (visual only, not scannable) */
+function drawQR(seed){
+  let h=0; for(const ch of seed) h=(h*31+ch.charCodeAt(0))>>>0;
+  const rnd=()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return (h>>>0)/4294967296};
+  let r='<rect width="29" height="29" fill="#fff"/>';
+  const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#000"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#000"/>`;
+  for(let y=0;y<29;y++)for(let x=0;x<29;x++){
+    const inF=(x<8&&y<8)||(x>20&&y<8)||(x<8&&y>20)||(x>11&&x<17&&y>11&&y<17);
+    if(!inF&&rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#000"/>`;
+  }
+  r+=finder(0,0)+finder(22,0)+finder(0,22);
+  r+=`<rect x="12" y="12" width="5" height="5" rx="1" fill="#fff"/><image href="${ICONS[S.coin]}" x="12.3" y="12.3" width="4.4" height="4.4"/>`;
+  $('#qr').innerHTML=r;
+}
+
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1400)}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]'); if(g){go(g.dataset.go);return}
+  const m=e.target.closest('#mList .m');
+  if(m){S.draftMethod=m.dataset.m;renderMethods();
+    if(m.dataset.m==='crypto'){ renderApi('methods'); if(!S.welcomeSeen){$('#welcome').classList.add('on');stepKey='welcome';renderSteps();renderApi('welcome');} }
+    return}
+  const c=e.target.closest('[data-coin]'); if(c){S.coin=c.dataset.coin;renderMethods();renderApi('methods');return}
+  const t=e.target.closest('[data-toast]'); if(t){toast(t.dataset.toast);return}
+  const st=e.target.closest('[data-step]'); if(st){jump(st.dataset.step);return}
+});
+$('#wOk').onclick=()=>{S.welcomeSeen=true;$('#welcome').classList.remove('on');stepKey='methods';renderSteps();renderApi('methods')};
+$('#welcome').onclick=e=>{if(e.target.id==='welcome')$('#wOk').click()};
+$('#confirmMethod').onclick=()=>{S.method=S.draftMethod;go('checkout')};
+$('#termsChk').onclick=function(){this.classList.toggle('on');$('#placeOrder').disabled=!this.classList.contains('on')};
+$('#placeOrder').onclick=()=>{
+  if(S.method==='crypto') startPayment();
+  else toast('Only the crypto flow is implemented in this prototype');
+};
+$('#ccCopy').onclick=()=>{const t=$('#ccCode').textContent;try{navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}toast('Code copied')};
+$('#regen').onclick=startPayment;
+$('#dSimPay').onclick=simulatePaid;
+$('#dSimExp').onclick=()=>{ if(S.view!=='payment'){S.method='crypto';startPayment();} S.deadline=Date.now(); updateTimer(); };
+$('#dReset').onclick=()=>{Object.assign(S,{method:null,coin:'USDT',welcomeSeen:false});$('#termsChk').classList.add('on');go('cart')};
+
+function jump(k){
+  $('#welcome').classList.remove('on');
+  if(['methods','welcome'].includes(k)){
+    go('methods'); S.draftMethod='crypto'; renderMethods(); renderApi('methods');
+    if(k==='welcome'){$('#welcome').classList.add('on');stepKey='welcome';renderSteps();renderApi('welcome')}
+    return;
+  }
+  if(k==='checkout'){go('checkout');return}
+  if(k==='cart'){go('cart');return}
+  S.method='crypto';
+  if(k==='payment') startPayment();
+  if(k==='verifying') simulatePaid();
+  if(k==='success'){ $('#okLine').textContent=`We received ${fmt(amt(S.coin))} ${S.coin}.`; go('success'); }
+  if(k==='expired'){ startPayment(); S.deadline=Date.now(); updateTimer(); }
+}
+
+go('cart');
+</script>
+</body>
+</html>
