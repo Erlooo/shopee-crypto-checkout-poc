@@ -420,7 +420,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
             <div class="cr-info"><span>Network</span><b>Polygon</b></div>
             <div class="cr-info"><span>You pay approx.</span><b id="estAmt"></b></div>
             <div class="cr-info" style="border-bottom:1px dashed var(--sp-line)"><span>Rate</span><b id="estRate"></b></div>
-            <div class="powered">Final amount is locked when you place the order and is valid for 5 minutes. Processed by Transfero.</div>
+            <div class="powered">Final amount is locked when you place the order. Pay before the timer ends. Processed by Transfero.</div>
           </div>
         </div>
         <div class="m-foot"><button class="btn-or" id="confirmMethod">Confirm</button></div>
@@ -496,11 +496,11 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
           <div class="res">
             <div class="big exp"><svg class="ico" viewBox="0 0 24 24" style="width:32px;height:32px"><circle cx="12" cy="13" r="8"/><path d="M12 9v4M9 2h6"/></svg></div>
             <h3>The payment window has ended</h3>
-            <p>Quotes are valid for 5 minutes. Your order is still saved: generate a new QR code with the updated amount.</p>
+            <p>The quote expired before payment. Your order is still saved: generate a new QR code with the updated amount.</p>
           </div>
           <div class="sec"><div class="sum">
             <div class="r"><span>Already sent the crypto?</span><span></span></div>
-            <div style="font-size:12px;color:var(--sp-muted)">Payments that arrive after the deadline are identified and returned to the sending wallet. Track it in My orders.</div>
+            <div style="font-size:12px;color:var(--sp-muted)">If you sent a payment after the timer ended, contact support with your order number.</div>
           </div></div>
           <div class="pay-actions">
             <button class="btn-or" id="regen">Generate new QR code</button>
@@ -518,7 +518,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
           <div class="wstep"><span class="b">1</span><div><div class="tt">Choose the currency</div><div class="dd">USDT, USDC or BRZ. We show how much you will pay before you confirm.</div></div></div>
           <div class="wstep"><span class="b">2</span><div><div class="tt">Place the order and send</div><div class="dd">Scan the QR code or copy the address into the wallet of your choice.</div></div></div>
           <div class="wstep"><span class="b">3</span><div><div class="tt">Automatic confirmation</div><div class="dd">We detect the payment within minutes and your order moves on to the seller.</div></div></div>
-          <div class="w-hl">The crypto amount is locked for 5 minutes after you place the order.</div>
+          <div class="w-hl">The crypto amount is locked when you place the order. Pay before the timer ends.</div>
           <button class="btn-or" id="wOk">Got it</button>
           <div class="powered" style="justify-content:center;margin-top:10px">Payment processed by Transfero</div>
         </div>
@@ -536,6 +536,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
     </div>
     <div class="card note">
       Base: <code>/api/v1/partner-api</code>. Every call uses a Bearer JWT from <code>POST /auth/token</code> (headers <code>x-partner-id</code> and <code>x-partner-secret</code>). Shopee calls the API from its own backend and renders everything in its own front end: Transfero never shows up as a page, only as the payment processor.
+      <br><br><em>Screen copy is illustrative; API contracts follow the Checkout Partner API docs.</em>
     </div>
   </aside>
 </div>
