@@ -534,6 +534,37 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
 
 .h5-res .ttl.warn,.h5-res .ico-c.warn{border:0;margin-top:0;padding:0}
 .h5-res .ttl.warn{background:none;padding:0;border-radius:0}
+
+/* ---------- H5: "Learn more" about refunds ---------- */
+.h5-link{color:#3d3dff;font-weight:600;text-decoration:underline;padding:0}
+.h5-link:focus-visible{outline:2px solid #271B67;outline-offset:2px;border-radius:2px}
+.h5-learn{max-height:88%;overflow-y:auto;padding:16px 16px 18px}
+.h5-learn .lh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.h5-learn h4{margin:0;font-size:16px;font-weight:700}
+.h5-x{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#271B67;flex:none}
+.h5-x:hover{background:#f0f0f7}
+.h5-x:focus-visible{outline:2px solid #271B67;outline-offset:1px}
+.h5-learn .lead{font-size:12.5px;line-height:1.5;color:#55557a;margin:0 0 14px}
+.h5-case{border:1px solid #e3e3f0;border-radius:10px;padding:12px;margin-bottom:10px}
+.h5-case h5{margin:0 0 10px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;color:#271B67}
+.h5-case .ic{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#f0f0ff;color:#3d3dff;flex:none}
+.h5-case .ic.ic-w{background:#fff4e5;color:#dc6803}
+.h5-case ol{list-style:none;margin:0;padding:0;display:grid;gap:9px;counter-reset:st}
+.h5-case li{display:flex;gap:10px;font-size:12.5px;line-height:1.45;color:#271B67;counter-increment:st}
+.h5-case li::before{content:counter(st);flex:none;width:20px;height:20px;border-radius:50%;background:#3d3dff;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+.h5-case .nb{margin-top:10px;font-size:11.5px;line-height:1.5;color:#55557a;background:#f7f7fc;border-radius:8px;padding:8px 10px}
+.h5-tips{font-size:12px;line-height:1.5;color:#271B67;background:#f0f0ff;border:1px solid #d9d9ff;border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.h5-tips b{font-weight:700}
+.h5-learn .help{font-size:11.5px;color:#55557a;text-align:center;margin:10px 0 0}
+.h5.desk #h5Learn{padding:48px 0;bottom:auto;min-height:100%}
+.h5.desk .h5-learn{width:580px;max-height:none;padding:26px 28px}
+.h5.desk .h5-learn h4{font-size:20px}
+.h5.desk .h5-learn .lead{font-size:14px}
+.h5.desk .h5-case{padding:16px}
+.h5.desk .h5-case h5{font-size:15px}
+.h5.desk .h5-case li{font-size:14px}
+.h5.desk .h5-case .nb,.h5.desk .h5-tips{font-size:13px}
+.h5.desk .h5-learn .help{font-size:12.5px}
 /* redirect interstitial */
 .rd{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 24px;text-align:center;background:#fff}
 .rd h3{margin:0;font-size:18px;font-weight:500;color:var(--sp-ink)}
@@ -926,7 +957,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
                 <button class="h5-select" id="selNet" type="button"><img src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIiB2aWV3Qm94PSIwIDAgODAwIDgwMCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiM4MjQ3ZTU7fS5jbHMtMntmaWxsOiNmZmY7fS5jbHMtM3tmaWxsOm5vbmU7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5wb2x5Z29uLXRva2VuLWxvZ28tZnJlZWxvZ292ZWN0b3JzLm5ldF88L3RpdGxlPjxjaXJjbGUgY2xhc3M9ImNscy0xIiBjeD0iNDAwIiBjeT0iNDAwIiByPSIzNzUuNSIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTUyNC4yOSwzMTkuNjZjLTktNS4yNC0yMC43Mi01LjI0LTMwLjYyLDBsLTcwLjI1LDQwLjE3TDM3NS42OCwzODYsMzA1LjQzLDQyNi4yYy05LDUuMjQtMjAuNzEsNS4yNC0zMC42MiwwTDIxOSwzOTQuNzZjLTktNS4yNC0xNS4zMS0xNC44NC0xNS4zMS0yNS4zMnYtNjJBMjguMTgsMjguMTgsMCwwLDEsMjE5LDI4Mi4xMWw1NC45NC0zMC41NmM5LTUuMjQsMjAuNzEtNS4yNCwzMC42MiwwbDU0Ljk0LDMwLjU2YzksNS4yNCwxNS4zMSwxNC44NSwxNS4zMSwyNS4zMlYzNDcuNmw0Ny43NC0yNy4wN1YyODAuMzZBMjguMTgsMjguMTgsMCwwLDAsNDA3LjIsMjU1TDMwNS40MywxOTcuNGMtOS01LjIzLTIwLjcxLTUuMjMtMzAuNjIsMEwxNzEuMjQsMjU1YTI4LjE4LDI4LjE4LDAsMCwwLTE1LjMyLDI1LjMyVjM5Ni41MWEyOC4xOCwyOC4xOCwwLDAsMCwxNS4zMiwyNS4zMmwxMDMuNTcsNTcuNjRjOSw1LjI0LDIwLjcxLDUuMjQsMzAuNjIsMGw3MC4yNS0zOS4zLDQ3Ljc0LTI3LjA3LDcwLjI1LTM5LjNjOS01LjI0LDIwLjcxLTUuMjQsMzAuNjIsMGw1NC45NCwzMC41N2M5LDUuMjQsMTUuMzEsMTQuODQsMTUuMzEsMjUuMzJ2NjJBMjguMiwyOC4yLDAsMCwxLDU3OS4yMyw1MTdsLTU0Ljk0LDMxLjQzYy05LDUuMjQtMjAuNzIsNS4yNC0zMC42MiwwbC01NC45NC0zMC41NmMtOS01LjI0LTE1LjMxLTE0Ljg1LTE1LjMxLTI1LjMyVjQ1Mi40bC00Ny43NCwyNy4wN3Y0MC4xN0EyOC4xOSwyOC4xOSwwLDAsMCwzOTEsNTQ1TDQ5NC41Nyw2MDIuNmM5LDUuMjMsMjAuNzEsNS4yMywzMC42MiwwTDYyOC43Niw1NDVjOS01LjI0LDE1LjMxLTE0Ljg0LDE1LjMxLTI1LjMyVjQwMy40OWEyOC4xNywyOC4xNywwLDAsMC0xNS4zMS0yNS4zMloiLz48cmVjdCBjbGFzcz0iY2xzLTMiIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIi8+PC9zdmc+" alt=""><span>Polygon</span><svg class="car" width="12" height="12" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.5"/></svg></button></div>
               <div class="h5-info"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg><span>Transaction time depends on the selected network. The transfer may take a few minutes to complete.</span></div>
               <div class="h5-row"><span>Order amount</span><b>R$ 192.50</b></div>
-              <p class="h5-legal">Payments processed by Transfero. Blockchain transactions are final: refunds of completed purchases are made by Shopee in BRL via Pix. If you send less than the total, the purchase is declined and the crypto is returned to you, minus the network costs of the return. <a href="#" onclick="return false">Learn more</a></p>
+              <p class="h5-legal">Payments processed by Transfero. Blockchain transactions are final: refunds of completed purchases are made by Shopee in BRL via Pix. If you send less than the total, the purchase is declined and the crypto is returned to you, minus the costs of the return transfer. <button type="button" class="h5-link" data-learn="">Learn more</button></p>
               <label class="h5-check"><input type="checkbox" id="h5Terms"><span>I have read and agree to the <a href="#" onclick="return false">terms of use</a> and <a href="#" onclick="return false">privacy policy</a>.</span></label>
               <button class="h5-btn" id="h5Gen" type="button" disabled>Generate QR code</button>
             </section>
@@ -979,7 +1010,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
             <section class="h5-card h5-res" data-h="under">
               <div class="ttl warn"><span class="ico-c warn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17v.5"/></svg></span>Payment below the required amount</div>
               <p id="h5UnderTxt"></p>
-              <p>The amount received will be returned to you. Shopee's customer support will contact you to collect the wallet address for the return, and the network costs of the return are deducted from the amount.</p>
+              <p>The amount received will be returned to you. Shopee's customer support will contact you to collect the wallet address for the return, and the costs of the return transfer are deducted from the amount. <button type="button" class="h5-link" data-learn="lrnUnder">How the return works</button></p>
               <button class="h5-btn" data-h5back="declined" type="button">Back to store</button>
             </section>
 
@@ -987,6 +1018,33 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
               <span class="lg"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzAuNzI2IiBoZWlnaHQ9Ijg5LjM2NiIgdmlld0JveD0iMCAwIDEzMC43MjYgODkuMzY2Ij4NCiAgPGcgaWQ9IkdydXBvXzU3OSIgZGF0YS1uYW1lPSJHcnVwbyA1NzkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY4NC44MjYgLTE4Ny4xMDYpIj4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTQiIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTQiIGQ9Ik0tNjE3LjUsMjMwLjUyNmwtMS45NjYtMS45NjYtMy4yNTIsMy4yNTItMjAuNzA5LDIwLjcsMjMuOTYxLDIzLjk1NiwyMy45NTYtMjMuOTU2Wm0tMTkuNTA5LDIxLjk5LDE3LjUtMTcuNS4wNDUtLjA0NS4wOTEuMDksMTcuNDQ2LDE3LjQ1Mi0xNy41MzcsMTcuNTM3WiIgZmlsbD0iI2ZmZiIvPg0KICAgIDxwYXRoIGlkPSJDYW1pbmhvXzc5NSIgZGF0YS1uYW1lPSJDYW1pbmhvIDc5NSIgZD0iTS02NTYuMzI2LDE5MS43bC00LjUzOC00LjUzOC0zLjI1OCwzLjI1My0yMC43LDIwLjcsMjMuOTYyLDIzLjk1NiwyMy45MTEtMjMuOTExLjA0NS0uMDQ1Wm0tNC41MzgsMzYuOTU2LTE3LjU0My0xNy41MzcsMTcuNS0xNy40OTIuMDQ2LS4wNDYsMTcuNTM3LDE3LjUzOC0uMDQ1LjA0NVoiIGZpbGw9IiNmZmYiLz4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTYiIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTYiIGQ9Ik0tNTc4LjA2MiwxODcuMTUxbC0yMC43LDIwLjcwNS0zLjIxMiwzLjIwNi0uMDQ1LjA0NiwyMy45NTYsMjMuOTU2LDMuMjU4LTMuMjUyLDIwLjctMjAuN1ptLjA0NSw0MS40NDktLjA0NS4wNDVMLTU5NS42LDIxMS4xMDhsLjA0NS0uMDQ2LDE3LjQ5Mi0xNy40OTIsMTcuNTQzLDE3LjUzOFoiIGZpbGw9IiNmZmYiLz4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTciIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTciIGQ9Ik0tNTc4LjAxNiwyMjguNTU1bC0xNy41MzgtMTcuNTM3LTMuMjA3LTMuMjA3LTIwLjctMjAuNzA1aC00MS40MDhsLTMuMjU3LDMuMjUzLDIwLjc0OSwyMC43NDksMy4yMTIsMy4yMDcsMjAuNywyMC43aDQxLjRsMy4yNTgtMy4yNTJabS0zOS41NzMsMS45MjYtMzguODM3LTM4LjgzNmgzNS4wOGwzOC44MzcsMzguODM2WiIgZmlsbD0iI2ZmZiIvPg0KICA8L2c+DQo8L3N2Zz4NCg==" alt="">Transfero</span>
               <span class="h5-sec"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Secure and fast blockchain transaction</span>
             </footer>
+          </div>
+          <div class="h5-scrim" id="h5Learn" hidden>
+            <div class="h5-sheet h5-learn" id="h5LearnBody" role="dialog" aria-modal="true" aria-labelledby="h5LearnT">
+              <div class="lh"><h4 id="h5LearnT">How refunds work</h4><button class="h5-x" type="button" data-learn-close aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+              <p class="lead">Blockchain transfers can't be reversed. That's why refunds are handled by Shopee, the same way as with its other payment methods.</p>
+              <section class="h5-case" id="lrnDone">
+                <h5><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></span>Returning or cancelling a purchase</h5>
+                <ol>
+                  <li>Request the refund through Shopee, as you would for any order.</li>
+                  <li>Shopee reviews the request under its return and refund policy.</li>
+                  <li>Once approved, you receive the order amount in BRL via Pix.</li>
+                </ol>
+                <div class="nb">Refunds of completed purchases are always made in BRL: no crypto is sent back, and the amount doesn't change with crypto prices.</div>
+              </section>
+              <section class="h5-case" id="lrnUnder">
+                <h5><span class="ic ic-w"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17v.5"/></svg></span>If you send less than the total</h5>
+                <ol>
+                  <li>The purchase is declined and the order is not placed.</li>
+                  <li>Shopee's customer support contacts you to collect a wallet address for the return.</li>
+                  <li>The crypto you sent is returned to that wallet, minus the costs of the return transfer.</li>
+                </ol>
+                <div class="nb">The return goes to the wallet you provide, not to the address you paid from, since exchange addresses can't always receive transfers back.</div>
+              </section>
+              <div class="h5-tips"><b>To avoid a declined purchase:</b> send exactly the total shown, on the Polygon network, before the timer ends.</div>
+              <button class="h5-btn" type="button" data-learn-close>Got it</button>
+              <p class="help">Questions about a refund? Contact Shopee customer support with your order ID.</p>
+            </div>
           </div>
           <div class="h5-scrim" id="h5Scrim" hidden><div class="h5-sheet" role="dialog" aria-labelledby="h5SheetT"><h4 id="h5SheetT"></h4><div id="h5Opts"></div></div></div>
         </div>
@@ -1654,10 +1712,10 @@ const API_H5={
   methods:()=>[{h:'Crypto opens Transfero\'s hosted page',p:MODE==='h5web'
     ?'In this model Shopee does not build the payment screens: after "Place Order" the browser goes to Transfero\'s payment page (H5), in the same tab.'
     :'In this model Shopee does not build the payment screens: after "Place order" it opens Transfero\'s payment page (H5) in an in-app webview.'}],
-  h5select:()=>[{h:'Concept, not available today',p:'Today Shopee/Monee can only consume Transfero Checkout through the API. The hosted page is under development, with no delivery estimate yet. '+(MODE==='h5web'?'It is based on the existing Checkout Web.':'It is based on the existing Checkout Web, adapted for mobile.')},{h:'Currency and network on Transfero\'s side',p:'The page lists the enabled currencies and networks (BRZ, USDC and USDT on Polygon for now) and collects the terms acceptance.'}],
+  h5select:()=>[{h:'Concept, not available today',p:'Today Shopee/Monee can only consume Transfero Checkout through the API. The hosted page is under development, with no delivery estimate yet. '+(MODE==='h5web'?'It is based on the existing Checkout Web.':'It is based on the existing Checkout Web, adapted for mobile.')},{h:'Currency and network on Transfero\'s side',p:'The page lists the enabled currencies and networks (BRZ, USDC and USDT on Polygon for now) and collects the terms acceptance.'},{h:'Refund rules explained on the page',p:'"Learn more" tells the buyer how refunds work: completed purchases are refunded by Shopee in BRL via Pix; payments below the total are declined and the crypto is returned to a wallet collected by Shopee\'s support, minus the costs of the return transfer.'}],
   h5qr:[{h:'Quote, QR and timer handled by Transfero',p:'The page creates the payment, locks the amount with fees included and shows the QR code, address, copy-and-paste code and timer. It detects the payment automatically.'}],
   h5done:()=>[{h:'Status back to Shopee',p:'Shopee receives the payment status through the agreed API or callback before confirming the order, and '+(MODE==='h5web'?'the browser returns the buyer to the Shopee order page.':'the webview returns the buyer to the Shopee app.')}],
-  h5under:[{h:'Underpayment: purchase declined',p:'The crypto received is returned to the buyer, with the network costs of the return borne by the buyer. Shopee/Monee\'s customer support collects the wallet address and Transfero provides an endpoint to receive it.'}],
+  h5under:[{h:'Underpayment: purchase declined',p:'The crypto received is returned to the buyer, with the costs of the return transfer borne by the buyer. Shopee/Monee\'s customer support collects the wallet address and Transfero provides an endpoint to receive it.'}],
   h5expired:[{h:'Payment order expired',p:'The quote was valid until the timer ended. The buyer can generate a new QR code on the same page or go back to Shopee.'}]
 };
 const H={coin:null,deadline:0,span:300000,tick:null,timers:[]};
@@ -1670,7 +1728,16 @@ function hvIsOpen(){ return MODE==='h5web'?W.view==='tf':!$('#wv').hidden; }
 function wscrollPm(){ $('#bview').scrollTop=$('#wpm').offsetTop*(parseFloat($('#bcanvas').style.zoom)||1)-20; }
 function hvIcon(c,sz){return `<img src="${ICONS[c]}" width="${sz}" height="${sz}" alt="">`}
 function hvNets(){const n=document.querySelectorAll('.phone .nets .net img');return {polygon:n[0]?n[0].src:'',ethereum:n[1]?n[1].src:''}}
-function hvStep(k){document.querySelectorAll('.h5-card').forEach(c=>c.classList.toggle('on',c.dataset.h===k));$('#h5').scrollTop=0;if(MODE==='h5web')$('#bview').scrollTop=0;
+function hvLearn(sec){
+  if(MODE==='h5web') $('#bview').scrollTop=0; else $('#h5').scrollTop=0;
+  $('#h5Scrim').hidden=true; $('#h5Learn').hidden=false;
+  const b=$('#h5LearnBody'); b.scrollTop=0;
+  const el=sec&&document.getElementById(sec);
+  if(el&&MODE!=='h5web') b.scrollTop=el.getBoundingClientRect().top-b.getBoundingClientRect().top-8;
+  b.querySelector('.h5-x').focus({preventScroll:true});
+}
+function hvLearnClose(){ if($('#h5Learn').hidden) return; $('#h5Learn').hidden=true; const l=document.querySelector('.h5-card.on .h5-link'); if(l) l.focus({preventScroll:true}); }
+function hvStep(k){$('#h5Learn').hidden=true;document.querySelectorAll('.h5-card').forEach(c=>c.classList.toggle('on',c.dataset.h===k));$('#h5').scrollTop=0;if(MODE==='h5web')$('#bview').scrollTop=0;
   const map={select:'h5select',qr:'h5qr',done:'h5done',under:'h5under',expired:'h5expired'};hStepKey(map[k]);}
 function hvOpen(coin){
   hStop();H.coin=coin||null;
@@ -1778,10 +1845,13 @@ document.addEventListener('click',e=>{
   const t=e.target;
   const c=t.closest('[data-hcoin]');if(c){hvPick(c.dataset.hcoin);return}
   if(t.closest('[data-net]')){$('#h5Scrim').hidden=true;return}
+  const lm=t.closest('[data-learn]');if(lm){hvLearn(lm.dataset.learn);return}
+  if(t.closest('[data-learn-close]')||t.id==='h5Learn'){hvLearnClose();return}
   const cp=t.closest('[data-copy]');if(cp){hvCopy(cp.dataset.copy,cp.dataset.msg);return}
   const hb=t.closest('[data-h5back]');if(hb){const to=hb.dataset.h5back;hvClose();sgo(to,{step:to==='declined'?'h5under':to});if(to==='checkout')htoast('Payment not completed');return}
   if(t.id==='h5Scrim')$('#h5Scrim').hidden=true;
 });
+document.addEventListener('keydown',e=>{ if(e.key!=='Escape') return; if(!$('#h5Learn').hidden) hvLearnClose(); else if(!$('#h5Scrim').hidden) $('#h5Scrim').hidden=true; });
 $('#selCoin').onclick=()=>hvSheet('coin');
 $('#selNet').onclick=()=>hvSheet('net');
 $('#h5Terms').onchange=hvSync;
