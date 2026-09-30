@@ -556,7 +556,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
 .h5-tips{font-size:12px;line-height:1.5;color:#271B67;background:#f0f0ff;border:1px solid #d9d9ff;border-radius:10px;padding:10px 12px;margin-bottom:12px}
 .h5-tips b{font-weight:700}
 .h5-learn .help{font-size:11.5px;color:#55557a;text-align:center;margin:10px 0 0}
-.h5.desk #h5Learn{padding:48px 0;bottom:auto;min-height:100%}
+.h5.desk #h5Learn{padding:44px 0 24px;bottom:auto;min-height:100%}
 .h5.desk .h5-learn{width:580px;max-height:none;padding:26px 28px}
 .h5.desk .h5-learn h4{font-size:20px}
 .h5.desk .h5-learn .lead{font-size:14px}
@@ -1022,28 +1022,23 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
           <div class="h5-scrim" id="h5Learn" hidden>
             <div class="h5-sheet h5-learn" id="h5LearnBody" role="dialog" aria-modal="true" aria-labelledby="h5LearnT">
               <div class="lh"><h4 id="h5LearnT">How refunds work</h4><button class="h5-x" type="button" data-learn-close aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-              <p class="lead">Blockchain transfers can't be reversed. That's why refunds are handled by Shopee, the same way as with its other payment methods.</p>
+              <p class="lead">Crypto payments can't be reversed on the blockchain, so refunds go through Shopee.</p>
               <section class="h5-case" id="lrnDone">
                 <h5><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></span>Returning or cancelling a purchase</h5>
                 <ol>
-                  <li>Request the refund through Shopee, as you would for any order.</li>
-                  <li>Shopee reviews the request under its return and refund policy.</li>
-                  <li>Once approved, you receive the order amount in BRL via Pix.</li>
+                  <li>Request the refund through Shopee, like any other order.</li>
+                  <li>Once approved, you get the order amount back in BRL via Pix.</li>
                 </ol>
-                <div class="nb">Refunds of completed purchases are always made in BRL: no crypto is sent back, and the amount doesn't change with crypto prices.</div>
               </section>
               <section class="h5-case" id="lrnUnder">
                 <h5><span class="ic ic-w"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17v.5"/></svg></span>If you send less than the total</h5>
                 <ol>
-                  <li>The purchase is declined and the order is not placed.</li>
-                  <li>Shopee's customer support contacts you to collect a wallet address for the return.</li>
-                  <li>The crypto you sent is returned to that wallet, minus the costs of the return transfer.</li>
+                  <li>The purchase is declined and Shopee's support asks you for a wallet address.</li>
+                  <li>The crypto is returned to that wallet, minus the return transfer costs.</li>
                 </ol>
-                <div class="nb">The return goes to the wallet you provide, not to the address you paid from, since exchange addresses can't always receive transfers back.</div>
               </section>
-              <div class="h5-tips"><b>To avoid a declined purchase:</b> send exactly the total shown, on the Polygon network, before the timer ends.</div>
+              <div class="h5-tips">To avoid this, send the exact total on the Polygon network before the timer ends.</div>
               <button class="h5-btn" type="button" data-learn-close>Got it</button>
-              <p class="help">Questions about a refund? Contact Shopee customer support with your order ID.</p>
             </div>
           </div>
           <div class="h5-scrim" id="h5Scrim" hidden><div class="h5-sheet" role="dialog" aria-labelledby="h5SheetT"><h4 id="h5SheetT"></h4><div id="h5Opts"></div></div></div>
