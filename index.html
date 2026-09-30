@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shopee Crypto POC</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --page:#eef0f3; --panel:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#dde1e6;
@@ -433,6 +433,104 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
 .wtoast{position:absolute;left:50%;top:40%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;padding:12px 20px;border-radius:4px;font-size:14px;z-index:40;display:none}
 .wtoast.on{display:block}
 .bwin{position:relative}
+/* ---------- in-app webview ---------- */
+.wv{position:absolute;left:0;right:0;top:44px;bottom:0;z-index:35;display:flex;flex-direction:column;background:#fff;animation:wvup .28s ease-out;border-radius:0 0 36px 36px;overflow:hidden}
+@keyframes wvup{from{transform:translateY(100%)}to{transform:none}}
+.wv-bar{flex:none;height:48px;display:flex;align-items:center;gap:8px;padding:0 10px;border-bottom:1px solid #ececec;background:#fff}
+.wv-x{width:32px;height:32px;display:grid;place-items:center;color:#333;border-radius:50%}
+.wv-x:hover{background:#f2f2f2}
+.wv-t{flex:1;text-align:center;line-height:1.2}
+.wv-t b{display:block;font:600 14px Roboto,system-ui,sans-serif;color:#222}
+.wv-t span{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#757575}
+.wv-sp{width:32px}
+
+/* ---------- Transfero hosted page (H5) ---------- */
+.h5{color-scheme:light;flex:1;overflow-y:auto;min-height:0;background:radial-gradient(120% 70% at 50% 0%,#5656ff 0%,#3d3dff 45%,#2b2bc4 100%);font-family:Montserrat,"Segoe UI",system-ui,sans-serif;color:#271B67;position:relative;scrollbar-width:none}
+.h5::-webkit-scrollbar{display:none}
+.h5-head{background:#fff;display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid #e7e7f3}
+.h5-head img{width:24px;height:auto}
+.h5-head .n{font-weight:600;font-size:14px;color:#271B67}
+.h5-head .oid{margin-left:auto;text-align:right;font-size:10px;color:#6b6b8a;line-height:1.3}
+.h5-head .oid b{display:block;font-size:11px;color:#271B67;font-weight:600}
+.h5-main{padding:18px 14px 8px}
+.h5-card{background:#fff;border-radius:12px;padding:16px;display:none;flex-direction:column;gap:12px;box-shadow:0 8px 24px rgba(20,20,90,.18)}
+.h5-card.on{display:flex}
+.h5-lbl{font-size:13px;font-weight:500;color:#271B67}
+.h5-select{display:flex;align-items:center;gap:8px;width:100%;border:1px solid #d9d9ea;border-radius:8px;padding:11px 12px;background:#fff;font:500 14px Montserrat,system-ui,sans-serif;color:#271B67;text-align:left;cursor:pointer}
+.h5-select.ph{color:#8a8aa6}
+.h5-select .car{margin-left:auto;color:#6b6b8a}
+.h5-select img{width:22px;height:22px}
+.h5-field{display:grid;gap:6px}
+.h5-info{display:flex;gap:8px;align-items:flex-start;background:#f0f0ff;border:1px solid #3d3dff;border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.45;color:#3d3dff}
+.h5-info svg{flex:none;margin-top:1px}
+.h5-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;padding:8px 0;border-top:1px solid #ececf5}
+.h5-row b{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.h5-row small{font-size:11px;color:#6b6b8a;font-weight:400}
+.h5-legal{font-size:11px;line-height:1.5;color:#55557a}
+.h5-legal a,.h5-check a{color:#3d3dff;font-weight:600;text-decoration:underline}
+.h5-check{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:#271B67;cursor:pointer}
+.h5-check input{-webkit-appearance:none;appearance:none;margin:1px 0 0;width:16px;height:16px;flex:none;border:1.5px solid #c9c9e4;border-radius:4px;background:#fff;display:grid;place-items:center;cursor:pointer}.h5-check input:checked{background:#3d3dff;border-color:#3d3dff}.h5-check input:checked::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}.h5-check input:focus-visible{outline:2px solid #271B67;outline-offset:2px}
+.h5-btn{width:100%;height:44px;border-radius:8px;background:#3d3dff;color:#fff;border:0;font:600 14px Montserrat,system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.h5-btn:hover{background:#3131e0}
+.h5-btn:disabled{background:#b9b9f7;cursor:not-allowed}
+.h5-btn.ghost{background:#fff;color:#271B67;border:1px solid #d9d9ea}
+.h5-btn.ghost:hover{background:#f7f7fc}
+.h5-btn:focus-visible,.h5-select:focus-visible{outline:2px solid #271B67;outline-offset:2px}
+
+.h5-qrrow{display:grid;grid-template-columns:128px 1fr;gap:12px;align-items:start}
+.h5-qr{position:relative;border:1px solid #e3e3f0;border-radius:8px;padding:6px;background:#fff}
+.h5-qr svg{display:block;width:100%;height:auto}
+.h5-verif{position:absolute;inset:0;background:rgba(255,255,255,.96);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;font-size:11px;font-weight:600;color:#271B67}
+.h5-verif[hidden]{display:none}
+.h5-spin{width:34px;height:34px;border-radius:50%;border:4px solid #e4e4fb;border-top-color:#3d3dff;animation:h5rot .9s linear infinite}
+@keyframes h5rot{to{transform:rotate(360deg)}}
+.h5-k{font-size:11px;color:#6b6b8a}
+.h5-v{font-size:13px;font-weight:700;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.h5-dest{display:flex;align-items:center;gap:6px;font:500 11px ui-monospace,Consolas,monospace;color:#271B67}
+.h5-copy{flex:none;width:26px;height:26px;border-radius:6px;border:1px solid #d9d9ea;background:#fff;display:grid;place-items:center;color:#3d3dff;cursor:pointer}
+.h5-exp{display:grid;gap:6px;font-size:12px}
+.h5-bar{height:6px;border-radius:3px;background:#e4e4fb;overflow:hidden}
+.h5-bar i{display:block;height:100%;background:#3d3dff;transition:width 1s linear}
+.h5-code{font:12px/1.4 ui-monospace,Consolas,monospace;background:#f7f7fc;border:1px dashed #c9c9e4;border-radius:6px;padding:9px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#271B67}
+.h5-hint{font-size:11px;line-height:1.5;color:#55557a;background:#f7f7fc;border-radius:8px;padding:9px 10px}
+.h5-warn{background:#fffaeb;border:1px solid #fec84b;border-radius:8px;padding:10px 12px;font-size:11.5px;line-height:1.5;color:#b54708}
+.h5-warn b{font-weight:700}
+.h5-status{display:flex;align-items:center;gap:8px;font-size:12px;color:#55557a}
+.h5-dot{width:8px;height:8px;border-radius:50%;background:#f79009;flex:none;animation:h5pulse 1.2s infinite}
+.h5-dot.ok{background:#12b76a;animation:none}
+@keyframes h5pulse{50%{opacity:.3}}
+.h5-res{text-align:left}
+.h5-res .ttl{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700}
+.h5-res .ico-c{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none}
+.h5-res .ico-c.ok{background:#e7f8ef;color:#12b76a}
+.h5-res .ico-c.warn{background:#fff4e5;color:#dc6803}
+.h5-res .ttl.ok{color:#12a150}
+.h5-res .ttl.warn{color:#b54708}
+.h5-res p{font-size:12.5px;line-height:1.55;color:#55557a}
+.h5-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.h5-grid .h5-v{display:flex;align-items:center;gap:6px}
+.h5-grid img{width:20px;height:20px}
+.h5-foot{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 0 28px;color:#fff;font-size:11px}
+.h5-foot .lg{display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px}
+.h5-foot .lg img{width:22px;height:auto}
+.h5-foot .h5-sec{display:flex;align-items:center;gap:6px;opacity:.9}
+
+/* option sheet */
+.h5-scrim{position:absolute;inset:0;background:rgba(20,20,60,.45);display:flex;align-items:flex-end;z-index:5}
+.h5-scrim[hidden]{display:none}
+.h5-sheet{width:100%;background:#fff;border-radius:14px 14px 0 0;padding:16px 14px 22px;font-family:Montserrat,system-ui,sans-serif;color:#271B67;animation:wvup .2s ease-out}
+.h5-sheet h4{margin:0 0 12px;font-size:14px;font-weight:600}
+.h5-opt{display:flex;align-items:center;gap:10px;width:100%;border:1px solid #e3e3f0;border-radius:8px;padding:11px 12px;margin-bottom:8px;background:#fff;font:500 14px Montserrat,system-ui,sans-serif;color:#271B67;cursor:pointer;text-align:left}
+.h5-opt img{width:24px;height:24px}
+.h5-opt .tk{color:#8a8aa6;font-weight:500}
+.h5-opt:disabled{opacity:.55;cursor:not-allowed}
+.h5-opt .soon{margin-left:auto;font-size:10px;font-weight:600;color:#6b6b8a;background:#f0f0f7;border-radius:4px;padding:2px 6px}
+.h5-opt.on{border-color:#3d3dff;background:#f7f7ff}
+
+.res .big.no{background:#fdecea;color:#d92d20}
+.wrap.mode-h5 #crPanel{display:none!important}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){.wv,.h5-sheet{animation:none}.h5-spin,.h5-dot{animation:none}}
 </style>
 </head>
 <body>
@@ -441,11 +539,12 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
     <div>
       <span class="tag">Transfero concept prototype</span>
       <h1>Crypto payments inside the Shopee checkout</h1>
-      <p>How Transfero Checkout, consumed via API, would appear as one more native payment method in the Shopee app and website, with no redirect and no new tab. Amounts, address and QR code are fictitious.</p>
+      <p>How Transfero Checkout, consumed via API, would appear as one more native payment method in the Shopee app and website, with no redirect and no new tab. Amounts, address and QR code are fictitious. The H5 view shows the alternative under development: Transfero's hosted payment page opened inside the Shopee app (not available today).</p>
     </div>
     <div class="modesw" role="group" aria-label="Version">
       <button data-mode="app" class="on"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>Mobile app</button>
       <button data-mode="web"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>Web</button>
+      <button data-mode="h5"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>H5 page</button>
     </div>
   </header>
 
@@ -456,6 +555,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
       <ol class="steps" id="steps"></ol>
       <div class="ctrls">
         <button class="btn-demo" id="dSimPay">Simulate payment received</button>
+        <button class="btn-demo" id="dSimUnder" hidden>Simulate underpayment</button>
         <button class="btn-demo" id="dSimExp">Simulate QR expiration</button>
         <button class="btn-demo" id="dReset">Restart (show welcome again)</button>
       </div>
@@ -710,6 +810,107 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
         </div>
       </div>
 
+
+      <!-- declined (marketplace) -->
+      <section class="view" data-v="declined">
+        <div class="hdr"><div class="t" style="text-align:center">Payment</div></div>
+        <div class="scroll">
+          <div class="res">
+            <div class="big no"><svg class="ico" viewBox="0 0 24 24" style="width:32px;height:32px"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg></div>
+            <h3>Payment declined</h3>
+            <p>The crypto payment was below the order amount, so the purchase was not completed. Our customer support will contact you to collect your wallet address for the return.</p>
+            <p>Order 260923K8P4QX · R$192.50</p>
+          </div>
+          <div class="pay-actions">
+            <button class="btn-or" data-go="methods">Choose another method</button>
+            <button class="btn-ghost" data-go="cart">Back to home</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- in-app webview with Transfero hosted page -->
+      <div class="wv" id="wv" hidden>
+        <div class="wv-bar">
+          <button class="wv-x" id="wvClose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <div class="wv-t"><b>Transfero Checkout</b><span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>Secure payment page</span></div>
+          <span class="wv-sp"></span>
+        </div>
+        <div class="h5" id="h5">
+          <div class="h5-head"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzAuNzI2IiBoZWlnaHQ9Ijg5LjM2NiIgdmlld0JveD0iMCAwIDEzMC43MjYgODkuMzY2Ij4NCiAgPGcgaWQ9IkdydXBvXzg1MyIgZGF0YS1uYW1lPSJHcnVwbyA4NTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY4NC44MjYgLTE4Ny4xMDYpIj4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTQiIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTQiIGQ9Ik0tNjE3LjUsMjMwLjUyNmwtMS45NjYtMS45NjYtMy4yNTIsMy4yNTItMjAuNzA5LDIwLjcsMjMuOTYxLDIzLjk1NiwyMy45NTYtMjMuOTU2Wm0tMTkuNTA5LDIxLjk5LDE3LjUtMTcuNS4wNDUtLjA0NS4wOTEuMDksMTcuNDQ2LDE3LjQ1Mi0xNy41MzcsMTcuNTM3WiIgZmlsbD0iIzI3MWI2NyIvPg0KICAgIDxwYXRoIGlkPSJDYW1pbmhvXzc5NSIgZGF0YS1uYW1lPSJDYW1pbmhvIDc5NSIgZD0iTS02NTYuMzI2LDE5MS43bC00LjUzOC00LjUzOC0zLjI1OCwzLjI1My0yMC43LDIwLjcsMjMuOTYyLDIzLjk1NiwyMy45MTEtMjMuOTExLjA0NS0uMDQ1Wm0tNC41MzgsMzYuOTU2LTE3LjU0My0xNy41MzcsMTcuNS0xNy40OTIuMDQ2LS4wNDYsMTcuNTM3LDE3LjUzOC0uMDQ1LjA0NVoiIGZpbGw9IiMyNzFiNjciLz4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTYiIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTYiIGQ9Ik0tNTc4LjA2MiwxODcuMTUxbC0yMC43LDIwLjcwNS0zLjIxMiwzLjIwNi0uMDQ1LjA0NiwyMy45NTYsMjMuOTU2LDMuMjU4LTMuMjUyLDIwLjctMjAuN1ptLjA0NSw0MS40NDktLjA0NS4wNDVMLTU5NS42LDIxMS4xMDhsLjA0NS0uMDQ2LDE3LjQ5Mi0xNy40OTIsMTcuNTQzLDE3LjUzOFoiIGZpbGw9IiMyNzFiNjciLz4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTciIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTciIGQ9Ik0tNTc4LjAxNiwyMjguNTU1bC0xNy41MzgtMTcuNTM3LTMuMjA3LTMuMjA3LTIwLjctMjAuNzA1aC00MS40MDhsLTMuMjU3LDMuMjUzLDIwLjc0OSwyMC43NDksMy4yMTIsMy4yMDcsMjAuNywyMC43aDQxLjRsMy4yNTgtMy4yNTJabS0zOS41NzMsMS45MjYtMzguODM3LTM4LjgzNmgzNS4wOGwzOC44MzcsMzguODM2WiIgZmlsbD0iIzI3MWI2NyIvPg0KICA8L2c+DQo8L3N2Zz4NCg==" alt=""><span class="n">Transfero Checkout</span><span class="oid">Order ID<b>260923K8P4QX</b></span></div>
+          <div class="h5-main">
+
+            <section class="h5-card" data-h="select">
+              <div class="h5-field"><span class="h5-lbl">Choose your currency</span>
+                <button class="h5-select ph" id="selCoin" type="button"><span id="selCoinV">Choose your currency</span><svg class="car" width="12" height="12" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.5"/></svg></button></div>
+              <div class="h5-field"><span class="h5-lbl">Network</span>
+                <button class="h5-select" id="selNet" type="button"><img src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIiB2aWV3Qm94PSIwIDAgODAwIDgwMCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiM4MjQ3ZTU7fS5jbHMtMntmaWxsOiNmZmY7fS5jbHMtM3tmaWxsOm5vbmU7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5wb2x5Z29uLXRva2VuLWxvZ28tZnJlZWxvZ292ZWN0b3JzLm5ldF88L3RpdGxlPjxjaXJjbGUgY2xhc3M9ImNscy0xIiBjeD0iNDAwIiBjeT0iNDAwIiByPSIzNzUuNSIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTUyNC4yOSwzMTkuNjZjLTktNS4yNC0yMC43Mi01LjI0LTMwLjYyLDBsLTcwLjI1LDQwLjE3TDM3NS42OCwzODYsMzA1LjQzLDQyNi4yYy05LDUuMjQtMjAuNzEsNS4yNC0zMC42MiwwTDIxOSwzOTQuNzZjLTktNS4yNC0xNS4zMS0xNC44NC0xNS4zMS0yNS4zMnYtNjJBMjguMTgsMjguMTgsMCwwLDEsMjE5LDI4Mi4xMWw1NC45NC0zMC41NmM5LTUuMjQsMjAuNzEtNS4yNCwzMC42MiwwbDU0Ljk0LDMwLjU2YzksNS4yNCwxNS4zMSwxNC44NSwxNS4zMSwyNS4zMlYzNDcuNmw0Ny43NC0yNy4wN1YyODAuMzZBMjguMTgsMjguMTgsMCwwLDAsNDA3LjIsMjU1TDMwNS40MywxOTcuNGMtOS01LjIzLTIwLjcxLTUuMjMtMzAuNjIsMEwxNzEuMjQsMjU1YTI4LjE4LDI4LjE4LDAsMCwwLTE1LjMyLDI1LjMyVjM5Ni41MWEyOC4xOCwyOC4xOCwwLDAsMCwxNS4zMiwyNS4zMmwxMDMuNTcsNTcuNjRjOSw1LjI0LDIwLjcxLDUuMjQsMzAuNjIsMGw3MC4yNS0zOS4zLDQ3Ljc0LTI3LjA3LDcwLjI1LTM5LjNjOS01LjI0LDIwLjcxLTUuMjQsMzAuNjIsMGw1NC45NCwzMC41N2M5LDUuMjQsMTUuMzEsMTQuODQsMTUuMzEsMjUuMzJ2NjJBMjguMiwyOC4yLDAsMCwxLDU3OS4yMyw1MTdsLTU0Ljk0LDMxLjQzYy05LDUuMjQtMjAuNzIsNS4yNC0zMC42MiwwbC01NC45NC0zMC41NmMtOS01LjI0LTE1LjMxLTE0Ljg1LTE1LjMxLTI1LjMyVjQ1Mi40bC00Ny43NCwyNy4wN3Y0MC4xN0EyOC4xOSwyOC4xOSwwLDAsMCwzOTEsNTQ1TDQ5NC41Nyw2MDIuNmM5LDUuMjMsMjAuNzEsNS4yMywzMC42MiwwTDYyOC43Niw1NDVjOS01LjI0LDE1LjMxLTE0Ljg0LDE1LjMxLTI1LjMyVjQwMy40OWEyOC4xNywyOC4xNywwLDAsMC0xNS4zMS0yNS4zMloiLz48cmVjdCBjbGFzcz0iY2xzLTMiIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIi8+PC9zdmc+" alt=""><span>Polygon</span><svg class="car" width="12" height="12" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.5"/></svg></button></div>
+              <div class="h5-info"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg><span>Transaction time depends on the selected network. The transfer may take a few minutes to complete.</span></div>
+              <div class="h5-row"><span>Order amount</span><b>R$ 192.50</b></div>
+              <p class="h5-legal">Payments processed by Transfero. Transactions are final and refunds are the responsibility of the listed merchant. <a href="#" onclick="return false">Learn more</a></p>
+              <label class="h5-check"><input type="checkbox" id="h5Terms"><span>I have read and agree to the <a href="#" onclick="return false">terms of use</a> and <a href="#" onclick="return false">privacy policy</a>.</span></label>
+              <button class="h5-btn" id="h5Gen" type="button" disabled>Generate QR code</button>
+            </section>
+
+            <section class="h5-card" data-h="qr">
+              <div class="h5-qrrow">
+                <div class="h5-qr"><svg id="h5qr" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg><div class="h5-verif" id="h5Verif" hidden><div class="h5-spin"></div>Verifying<br>payment...</div></div>
+                <div>
+                  <div class="h5-k">Total to pay</div><div class="h5-v" id="h5Tot"></div>
+                  <div class="h5-k">Network</div><div class="h5-v">Polygon</div>
+                  <div class="h5-k">Destination</div>
+                  <div class="h5-dest"><span>0xDEMO…PR0T0</span><button class="h5-copy" data-copy="0xDEMO000000000000000000000000000000PR0T0" data-msg="Address copied" aria-label="Copy address"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button></div>
+                </div>
+              </div>
+              <div class="h5-exp"><span id="h5ExpTxt">The payment order expires in 05:00</span><div class="h5-bar"><i id="h5Bar" style="width:100%"></i></div></div>
+              <div class="h5-field"><span class="h5-k">Or use the copy-and-paste code</span><div class="h5-code" id="h5Code"></div>
+                <button class="h5-btn" id="h5CopyCode" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copy code</button></div>
+              <div>
+                <div class="h5-row"><span>Order amount</span><b>R$ 192.50</b></div>
+                <div class="h5-row"><span>Total in crypto <small>(fees included)</small></span><b id="h5Tot2"></b></div>
+              </div>
+              <div class="h5-hint">Paying from an exchange that can't read QR codes? Enter the amount and the destination address manually in the exchange app.</div>
+              <div class="h5-warn"><b>Attention!</b> For a better experience, send from a non-custodial wallet (one where you control your private keys).<br><b>Wallet examples: Coinbase Wallet, MetaMask, Trust Wallet.</b></div>
+              <div class="h5-status" id="h5Status"><span class="h5-dot"></span>Awaiting payment. Confirmation is automatic.</div>
+              <button class="h5-btn ghost" id="h5Cancel" type="button">Cancel payment</button>
+            </section>
+
+            <section class="h5-card h5-res" data-h="done">
+              <div class="ttl ok"><span class="ico-c ok"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12l5 5 9-10"/></svg></span>Payment completed!</div>
+              <p>Your payment was completed successfully. You will be redirected to the store in a few moments.</p>
+              <div class="h5-grid">
+                <div><div class="h5-k">Currency</div><div class="h5-v" id="h5DoneCoin"></div></div>
+                <div><div class="h5-k">Network</div><div class="h5-v">Polygon</div></div>
+              </div>
+              <div><div class="h5-k">Order ID</div><div class="h5-v">260923K8P4QX</div></div>
+              <div>
+                <div class="h5-row"><span>Order amount</span><b>R$ 192.50</b></div>
+                <div class="h5-row"><span>Total in crypto</span><b id="h5DoneTot"></b></div>
+              </div>
+              <button class="h5-btn" id="h5Back" type="button">Back to store</button>
+            </section>
+
+            <section class="h5-card h5-res" data-h="expired">
+              <div class="ttl warn"><span class="ico-c warn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="13" r="8"/><path d="M12 9v4M9 2h6"/></svg></span>The payment order has expired</div>
+              <p>The quote was valid until the timer ended. Generate a new QR code with the updated amount, or go back to the store.</p>
+              <button class="h5-btn" id="h5Regen" type="button">Generate new QR code</button>
+              <button class="h5-btn ghost" data-h5back="checkout" type="button">Back to store</button>
+            </section>
+
+            <section class="h5-card h5-res" data-h="under">
+              <div class="ttl warn"><span class="ico-c warn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17v.5"/></svg></span>Payment below the required amount</div>
+              <p id="h5UnderTxt"></p>
+              <p>The amount received will be returned to you. Shopee's customer support will contact you to collect the wallet address for the return, and the network costs of the return are deducted from the amount.</p>
+              <button class="h5-btn" data-h5back="declined" type="button">Back to store</button>
+            </section>
+
+            <footer class="h5-foot">
+              <span class="lg"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzAuNzI2IiBoZWlnaHQ9Ijg5LjM2NiIgdmlld0JveD0iMCAwIDEzMC43MjYgODkuMzY2Ij4NCiAgPGcgaWQ9IkdydXBvXzU3OSIgZGF0YS1uYW1lPSJHcnVwbyA1NzkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY4NC44MjYgLTE4Ny4xMDYpIj4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTQiIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTQiIGQ9Ik0tNjE3LjUsMjMwLjUyNmwtMS45NjYtMS45NjYtMy4yNTIsMy4yNTItMjAuNzA5LDIwLjcsMjMuOTYxLDIzLjk1NiwyMy45NTYtMjMuOTU2Wm0tMTkuNTA5LDIxLjk5LDE3LjUtMTcuNS4wNDUtLjA0NS4wOTEuMDksMTcuNDQ2LDE3LjQ1Mi0xNy41MzcsMTcuNTM3WiIgZmlsbD0iI2ZmZiIvPg0KICAgIDxwYXRoIGlkPSJDYW1pbmhvXzc5NSIgZGF0YS1uYW1lPSJDYW1pbmhvIDc5NSIgZD0iTS02NTYuMzI2LDE5MS43bC00LjUzOC00LjUzOC0zLjI1OCwzLjI1My0yMC43LDIwLjcsMjMuOTYyLDIzLjk1NiwyMy45MTEtMjMuOTExLjA0NS0uMDQ1Wm0tNC41MzgsMzYuOTU2LTE3LjU0My0xNy41MzcsMTcuNS0xNy40OTIuMDQ2LS4wNDYsMTcuNTM3LDE3LjUzOC0uMDQ1LjA0NVoiIGZpbGw9IiNmZmYiLz4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTYiIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTYiIGQ9Ik0tNTc4LjA2MiwxODcuMTUxbC0yMC43LDIwLjcwNS0zLjIxMiwzLjIwNi0uMDQ1LjA0NiwyMy45NTYsMjMuOTU2LDMuMjU4LTMuMjUyLDIwLjctMjAuN1ptLjA0NSw0MS40NDktLjA0NS4wNDVMLTU5NS42LDIxMS4xMDhsLjA0NS0uMDQ2LDE3LjQ5Mi0xNy40OTIsMTcuNTQzLDE3LjUzOFoiIGZpbGw9IiNmZmYiLz4NCiAgICA8cGF0aCBpZD0iQ2FtaW5ob183OTciIGRhdGEtbmFtZT0iQ2FtaW5obyA3OTciIGQ9Ik0tNTc4LjAxNiwyMjguNTU1bC0xNy41MzgtMTcuNTM3LTMuMjA3LTMuMjA3LTIwLjctMjAuNzA1aC00MS40MDhsLTMuMjU3LDMuMjUzLDIwLjc0OSwyMC43NDksMy4yMTIsMy4yMDcsMjAuNywyMC43aDQxLjRsMy4yNTgtMy4yNTJabS0zOS41NzMsMS45MjYtMzguODM3LTM4LjgzNmgzNS4wOGwzOC44MzcsMzguODM2WiIgZmlsbD0iI2ZmZiIvPg0KICA8L2c+DQo8L3N2Zz4NCg==" alt="">Transfero</span>
+              <span class="h5-sec"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Secure and fast blockchain transaction</span>
+            </footer>
+          </div>
+          <div class="h5-scrim" id="h5Scrim" hidden><div class="h5-sheet" role="dialog" aria-labelledby="h5SheetT"><h4 id="h5SheetT"></h4><div id="h5Opts"></div></div></div>
+        </div>
+      </div>
       <div class="toast" id="toast"></div>
     </div>
   </div>
@@ -915,7 +1116,7 @@ pre{background:var(--code);color:var(--code-ink);border-radius:8px;padding:10px 
       <h2>Behind the screen: Transfero Checkout API</h2>
       <div id="api"></div>
     </div>
-    <div class="card note">
+    <div class="card note" id="apiNote">
       Base: <code>/api/v1/partner-api</code>. Every call uses a Bearer JWT from <code>POST /auth/token</code> (headers <code>x-partner-id</code> and <code>x-partner-secret</code>). Shopee calls the API from its own backend and renders everything in its own front end: Transfero never shows up as a page, only as the payment processor.
       <br><br><em>Screen copy is illustrative; API contracts follow the Checkout Partner API docs.</em>
     </div>
@@ -1021,7 +1222,7 @@ const API={
 };
 
 function renderApi(key){
-  let list=API[key]; if(typeof list==='function') list=list();
+  let list=(MODE==='h5'?API_H5:API)[key]; if(typeof list==='function') list=list(); if(!list) list=[];
   $('#api').innerHTML=list.map(s=>`<div class="api-step"><h3>${s.v?`<span class="verb">${s.v}</span>`:''}${s.e?`<code>${s.e}</code><br>`:''}${s.h}</h3><p>${s.p}</p>${s.j?`<pre>${s.j.replace(/</g,'&lt;')}</pre>`:''}</div>`).join('');
 }
 
@@ -1039,7 +1240,7 @@ function go(v,opts={}){
   renderSteps(); renderApi(stepKey);
 }
 function renderSteps(){
-  $('#steps').innerHTML=STEPS.map(([k,l],i)=>`<li><button data-step="${k}" class="${k===stepKey?'on':''}"><span class="n">${i+1}</span>${l}</button></li>`).join('');
+  $('#steps').innerHTML=(MODE==='h5'?STEPS_H5:STEPS).map(([k,l],i)=>`<li><button data-step="${k}" class="${k===stepKey?'on':''}"><span class="n">${i+1}</span>${l}</button></li>`).join('');
 }
 
 /* methods */
@@ -1055,6 +1256,7 @@ function renderMethods(){
   $('#estRate').textContent=S.coin==='BRZ'?'1 BRZ = R$1.00':`1 ${S.coin} ≈ R$${fmt(COINS[S.coin].rate)}`;
 }
 function renderCheckout(){
+  if(MODE==='h5'){ const lb={pix:'Pix',card:'Credit card',boleto:'Boleto',crypto:'Crypto · Transfero'}; $('#paySel').textContent=S.method?lb[S.method]:'See all'; $('#sumCrypto').style.display='none'; $('#terms').style.display='none'; $('#termsShopee').style.display='block'; $('#placeOrder').disabled=!S.method; return; }
   const c=S.method==='crypto';
   const labels={pix:'Pix',card:'Credit card',boleto:'Boleto'};
   $('#paySel').innerHTML=!S.method?'See all':c?`${coinIcon(S.coin,18)} ${S.coin} · Polygon`:labels[S.method];
@@ -1125,25 +1327,27 @@ document.addEventListener('click',e=>{
   const g=e.target.closest('[data-go]'); if(g){go(g.dataset.go);return}
   const m=e.target.closest('#mList .m');
   if(m){S.draftMethod=m.dataset.m;renderMethods();
-    if(m.dataset.m==='crypto'){ renderApi('methods'); if(!S.welcomeSeen){$('#welcome').classList.add('on');stepKey='welcome';renderSteps();renderApi('welcome');} }
+    if(m.dataset.m==='crypto'){ renderApi('methods'); if(!S.welcomeSeen&&MODE!=='h5'){$('#welcome').classList.add('on');stepKey='welcome';renderSteps();renderApi('welcome');} }
     return}
   const c=e.target.closest('[data-coin]'); if(c){S.coin=c.dataset.coin;renderMethods();renderApi('methods');return}
   const t=e.target.closest('[data-toast]'); if(t){toast(t.dataset.toast);return}
-  const st=e.target.closest('[data-step]'); if(st){(MODE==='web'?wjump:jump)(st.dataset.step);return}
+  const st=e.target.closest('[data-step]'); if(st){(MODE==='web'?wjump:MODE==='h5'?hjump:jump)(st.dataset.step);return}
 });
 $('#wOk').onclick=()=>{S.welcomeSeen=true;$('#welcome').classList.remove('on');stepKey='methods';renderSteps();renderApi('methods')};
 $('#welcome').onclick=e=>{if(e.target.id==='welcome')$('#wOk').click()};
 $('#confirmMethod').onclick=()=>{S.method=S.draftMethod;go('checkout')};
 $('#termsChk').onclick=function(){this.classList.toggle('on');$('#placeOrder').disabled=!this.classList.contains('on')};
 $('#placeOrder').onclick=()=>{
+  if(MODE==='h5'){ if(S.method==='crypto') hvOpen(); else toast('Only the crypto flow is implemented in this prototype'); return; }
   if(S.method==='crypto') startPayment();
   else toast('Only the crypto flow is implemented in this prototype');
 };
 $('#ccCopy').onclick=()=>{const t=$('#ccCode').textContent;try{navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}toast('Code copied')};
 $('#regen').onclick=startPayment;
-$('#dSimPay').onclick=()=>MODE==='web'?wsimulatePaid():simulatePaid();
-$('#dSimExp').onclick=()=>{ if(MODE==='web'){ if(W.view!=='payment'){S.method='crypto';wstartPayment();} W.deadline=Date.now(); wupdateTimer(); return; } if(S.view!=='payment'){S.method='crypto';startPayment();} S.deadline=Date.now(); updateTimer(); };
-$('#dReset').onclick=()=>{Object.assign(S,{method:null,coin:'USDT',welcomeSeen:false});$('#termsChk').classList.add('on');W.terms=undefined;if(MODE==='web')wjump('cart');else go('cart')};
+$('#dSimPay').onclick=()=>MODE==='h5'?hvSimulate('paid'):MODE==='web'?wsimulatePaid():simulatePaid();
+$('#dSimUnder').onclick=()=>hvSimulate('under');
+$('#dSimExp').onclick=()=>{ if(MODE==='h5'){ hvSimulate('expired'); return; } if(MODE==='web'){ if(W.view!=='payment'){S.method='crypto';wstartPayment();} W.deadline=Date.now(); wupdateTimer(); return; } if(S.view!=='payment'){S.method='crypto';startPayment();} S.deadline=Date.now(); updateTimer(); };
+$('#dReset').onclick=()=>{Object.assign(S,{method:null,coin:'USDT',welcomeSeen:false});$('#termsChk').classList.add('on');W.terms=undefined;if(MODE==='h5'){hvClose();hjump('cart');}else if(MODE==='web')wjump('cart');else go('cart')};
 
 function jump(k){
   $('#welcome').classList.remove('on');
@@ -1260,10 +1464,18 @@ function wjump(k){
 }
 function setMode(m){
   if(m===MODE) return;
-  MODE=m;
+  const prev=MODE; MODE=m;
   document.querySelectorAll('.modesw button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
   $('.wrap').classList.toggle('web',m==='web');
-  const k=stepKey==='verifying'?'payment':stepKey;
+  $('.wrap').classList.toggle('mode-h5',m==='h5');
+  $('#dSimUnder').hidden=m!=='h5';
+  $('#apiNote').hidden=m==='h5';
+  const toH5={cart:'cart',checkout:'checkout',methods:'methods',welcome:'methods',payment:'h5qr',verifying:'h5qr',success:'h5done',expired:'h5expired'};
+  const fromH5={cart:'cart',checkout:'checkout',methods:'methods',h5select:'methods',h5qr:'payment',h5done:'success',h5under:'checkout',h5expired:'expired'};
+  let k=stepKey;
+  if(prev==='h5'){ hvClose(); k=fromH5[k]||'cart'; }
+  if(m==='h5'){ stopTimer(); wstopTimer(); wclear(); $('#welcome').classList.remove('on'); $('#wWelcome').classList.remove('on'); hjump(toH5[k==='verifying'?'payment':k]||'cart'); return; }
+  k=k==='verifying'?'payment':k;
   if(m==='web'){ stopTimer(); $('#welcome').classList.remove('on'); fitBrowser(); wjump(k); }
   else { wstopTimer(); wclear(); $('#wWelcome').classList.remove('on'); jump(k); }
 }
@@ -1289,6 +1501,146 @@ $('#wRegen').onclick=wstartPayment;
 $('#wCryptoIco').innerHTML=document.querySelector('#mList [data-m=crypto] .mi').innerHTML.replace(/width="24" height="24"/,'width="18" height="18"');
 window.addEventListener('resize',fitBrowser);
 if(window.ResizeObserver) new ResizeObserver(fitBrowser).observe($('#bview'));
+
+
+/* ---------- H5 (hosted page) mode ---------- */
+const STEPS_H5=[
+  ['cart','Cart ready for checkout'],
+  ['checkout','Checkout'],
+  ['methods','Payment method: Crypto'],
+  ['h5select','Transfero page: currency and network'],
+  ['h5qr','Transfero page: QR and timer'],
+  ['h5done','Payment completed, back to Shopee'],
+  ['h5under','Paid less: purchase declined'],
+  ['h5expired','Expired']
+];
+const API_H5={
+  cart:[{h:'No calls to Transfero',p:'Cart is 100% Shopee.'}],
+  checkout:[{h:'No calls to Transfero',p:'Shopee only lists Crypto as a payment method. Currency and network are chosen on Transfero\'s page.'}],
+  methods:[{h:'Crypto opens Transfero\'s hosted page',p:'In this model Shopee does not build the payment screens: after "Place order" it opens Transfero\'s payment page (H5) in an in-app webview.'}],
+  h5select:[{h:'Concept, not available today',p:'Today Shopee/Monee can only consume Transfero Checkout through the API. The hosted page is under development, with no delivery estimate yet. It is based on the existing Checkout Web, adapted for mobile.'},{h:'Currency and network on Transfero\'s side',p:'The page lists the enabled currencies and networks (BRZ, USDC and USDT on Polygon for now) and collects the terms acceptance.'}],
+  h5qr:[{h:'Quote, QR and timer handled by Transfero',p:'The page creates the payment, locks the amount with fees included and shows the QR code, address, copy-and-paste code and timer. It detects the payment automatically.'}],
+  h5done:[{h:'Status back to Shopee',p:'Shopee receives the payment status through the agreed API or callback before confirming the order, and the webview returns the buyer to the Shopee app.'}],
+  h5under:[{h:'Underpayment: purchase declined',p:'The crypto received is returned to the buyer, with the network costs of the return borne by the buyer. Shopee/Monee\'s customer support collects the wallet address and Transfero provides an endpoint to receive it.'}],
+  h5expired:[{h:'Payment order expired',p:'The quote was valid until the timer ended. The buyer can generate a new QR code on the same page or go back to Shopee.'}]
+};
+const H={coin:null,deadline:0,span:300000,tick:null,timers:[]};
+const hlater=(fn,ms)=>H.timers.push(setTimeout(fn,ms));
+function hStop(){H.timers.forEach(clearTimeout);H.timers=[];clearInterval(H.tick);H.tick=null}
+function hStepKey(k){stepKey=k;renderSteps();renderApi(k)}
+function hvIcon(c,sz){return `<img src="${ICONS[c]}" width="${sz}" height="${sz}" alt="">`}
+function hvNets(){const n=document.querySelectorAll('.phone .nets .net img');return {polygon:n[0]?n[0].src:'',ethereum:n[1]?n[1].src:''}}
+function hvStep(k){document.querySelectorAll('.h5-card').forEach(c=>c.classList.toggle('on',c.dataset.h===k));$('#h5').scrollTop=0;
+  const map={select:'h5select',qr:'h5qr',done:'h5done',under:'h5under',expired:'h5expired'};hStepKey(map[k]);}
+function hvOpen(coin){
+  hStop();H.coin=coin||null;
+  const img=$('#selCoin img');if(img)img.remove();
+  if(coin){hvPick(coin,true)}else{$('#selCoinV').textContent='Choose your currency';$('#selCoin').classList.add('ph')}
+  $('#h5Terms').checked=!!coin;$('#h5Gen').textContent='Generate QR code';hvSync();
+  $('#h5Scrim').hidden=true;$('#wv').hidden=false;hvStep('select');
+}
+function hvClose(){hStop();$('#wv').hidden=true}
+function hvSync(){$('#h5Gen').disabled=!(H.coin&&$('#h5Terms').checked)}
+function hvSheet(kind){
+  const box=$('#h5Opts');
+  if(kind==='coin'){
+    $('#h5SheetT').textContent='Currencies available for payment';
+    const N={USDT:'Tether',USDC:'USD Coin',BRZ:'Brazilian Digital Token'};
+    box.innerHTML=['USDT','USDC','BRZ'].map(c=>`<button class="h5-opt ${H.coin===c?'on':''}" data-hcoin="${c}" type="button">${hvIcon(c,24)}<span>${N[c]} <span class="tk">${c}</span></span></button>`).join('');
+  }else{
+    const n=hvNets();$('#h5SheetT').textContent='Network';
+    box.innerHTML=`<button class="h5-opt on" data-net="polygon" type="button"><img src="${n.polygon}" alt="">Polygon</button><button class="h5-opt" type="button" disabled><img src="${n.ethereum}" alt="">Ethereum<span class="soon">Coming soon</span></button>`;
+  }
+  $('#h5Scrim').hidden=false;
+}
+function hvPick(c,silent){
+  const N={USDT:'Tether',USDC:'USD Coin',BRZ:'Brazilian Digital Token'};
+  H.coin=c;S.coin=c;$('#selCoin').classList.remove('ph');
+  const img=$('#selCoin img');if(img)img.remove();
+  $('#selCoin').insertAdjacentHTML('afterbegin',hvIcon(c,22));
+  $('#selCoinV').textContent=`${N[c]} (${c})`;
+  $('#h5Scrim').hidden=true;if(!silent)hvSync();
+}
+function hvStartQR(span){
+  hStop();S.coin=H.coin;
+  const a=`${fmt(amt(H.coin))} ${H.coin}`;
+  $('#h5Tot').textContent=a;$('#h5Tot2').textContent=a;
+  $('#h5Code').textContent='ethereum:0xDEMO000000000000000000000000000000PR0T0';
+  $('#h5Verif').hidden=true;
+  $('#h5Status').innerHTML='<span class="h5-dot"></span>Awaiting payment. Confirmation is automatic.';
+  drawQR(H.coin,'#h5qr');
+  H.span=span||300000;H.deadline=Date.now()+H.span;
+  hvTick();H.tick=setInterval(hvTick,1000);
+  hvStep('qr');
+}
+function hvTick(){
+  const left=Math.max(0,H.deadline-Date.now()),sec=Math.ceil(left/1000);
+  $('#h5ExpTxt').textContent=`The payment order expires in ${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+  $('#h5Bar').style.width=(left/H.span*100)+'%';
+  if(left<=0){hStop();hvStep('expired')}
+}
+function hvDetect(under){
+  clearInterval(H.tick);H.tick=null;
+  $('#h5Verif').hidden=false;
+  $('#h5Status').innerHTML='<span class="h5-dot ok"></span>Transaction found on the Polygon network';
+  hlater(()=>{
+    if(under){
+      const got=Math.floor(amt(H.coin)*0.85*100)/100;
+      $('#h5UnderTxt').innerHTML=`We received <b>${fmt(got)} ${H.coin}</b>, less than the <b>${fmt(amt(H.coin))} ${H.coin}</b> required, so the purchase was declined.`;
+      hvStep('under');return;
+    }
+    $('#h5DoneCoin').innerHTML=`${hvIcon(H.coin,20)}${H.coin}`;
+    $('#h5DoneTot').textContent=`${fmt(amt(H.coin))} ${H.coin}`;
+    hvStep('done');
+    let n=5;const b=$('#h5Back');b.textContent=`Back to Shopee in ${n}s…`;
+    const iv=setInterval(()=>{n--;if(n<=0){clearInterval(iv);hvToSuccess()}else b.textContent=`Back to Shopee in ${n}s…`},1000);
+    H.timers.push(iv);
+  },2200);
+}
+function hvToSuccess(){
+  hvClose();
+  $('#okLine').textContent=`We received ${fmt(amt(H.coin))} ${H.coin} through Transfero Checkout.`;
+  const t=$('#tlSettle');t.className='cur';t.innerHTML='<span>Confirming with Transfero<div class="s">Released to the seller shortly</div></span>';
+  go('success',{step:'h5done'});
+  hlater(()=>{t.className='ok';t.innerHTML='<span>Payment confirmed<div class="s">Order released to the seller</div></span>'},2500);
+}
+function hvSimulate(kind){
+  if(MODE!=='h5') return;
+  S.method='crypto';
+  if($('#wv').hidden||!document.querySelector('.h5-card.on[data-h="qr"]')){ hvOpen(H.coin||'USDT'); hvStartQR(kind==='expired'?6000:300000); if(kind==='expired') return; }
+  if(kind==='expired'){H.span=6000;H.deadline=Date.now()+6000;return}
+  hvDetect(kind==='under');
+}
+function hjump(k){
+  hStop();$('#welcome').classList.remove('on');
+  if(k==='cart'||k==='checkout'){hvClose();go(k);return}
+  if(k==='methods'){hvClose();go('methods',{step:'methods'});S.draftMethod='crypto';renderMethods();return}
+  S.method='crypto';
+  if(k==='h5select'){go('checkout',{step:'h5select'});hvOpen();return}
+  if(k==='h5qr'){go('checkout');hvOpen(H.coin||'USDT');hvStartQR();return}
+  if(k==='h5done'){go('checkout');hvOpen(H.coin||'USDT');hvStartQR();hvDetect(false);return}
+  if(k==='h5under'){go('checkout');hvOpen(H.coin||'USDT');hvStartQR();hvDetect(true);return}
+  if(k==='h5expired'){go('checkout');hvOpen(H.coin||'USDT');hvStartQR(4000);return}
+}
+function hvCopy(text,msg){try{navigator.clipboard.writeText(text).catch(()=>{})}catch(e){}toast(msg)}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#wv')) return;
+  const t=e.target;
+  const c=t.closest('[data-hcoin]');if(c){hvPick(c.dataset.hcoin);return}
+  if(t.closest('[data-net]')){$('#h5Scrim').hidden=true;return}
+  const cp=t.closest('[data-copy]');if(cp){hvCopy(cp.dataset.copy,cp.dataset.msg);return}
+  const hb=t.closest('[data-h5back]');if(hb){const to=hb.dataset.h5back;hvClose();go(to);if(to==='checkout')toast('Payment not completed');return}
+  if(t.id==='h5Scrim')$('#h5Scrim').hidden=true;
+});
+$('#selCoin').onclick=()=>hvSheet('coin');
+$('#selNet').onclick=()=>hvSheet('net');
+$('#h5Terms').onchange=hvSync;
+$('#h5Gen').onclick=()=>{const b=$('#h5Gen');b.disabled=true;b.textContent='Generating QR code…';hlater(()=>hvStartQR(),700)};
+$('#h5CopyCode').onclick=()=>hvCopy($('#h5Code').textContent,'Code copied');
+$('#h5Cancel').onclick=()=>{hvClose();go('checkout');toast('Payment not completed')};
+$('#wvClose').onclick=()=>{hvClose();go('checkout');toast('Payment not completed')};
+$('#h5Regen').onclick=()=>hvStartQR();
+$('#h5Back').onclick=hvToSuccess;
 
 go('cart');
 </script>
